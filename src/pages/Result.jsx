@@ -12,7 +12,10 @@ const Result = (props) => {
       <p>
         Your project has been created with the following information. You can
         download a pre-populated template database from the the projects detail
-        page here: <a href="#">{state.prj_cd}</a>{" "}
+        page here:{" "}
+        <button type="button" class="btn btn-link">
+          {state.prj_cd}
+        </button>
       </p>
 
       <pre>{JSON.stringify(state, null, 2)}</pre>

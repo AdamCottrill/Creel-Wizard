@@ -17,10 +17,10 @@ function App() {
   return (
     <StateMachineProvider>
       <div className="container">
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
           <div className="row justify-content-between my-3">
             <div className="col-6">
-              <h1>Project Wizard</h1>
+              <h1>Project Setup Wizard</h1>
             </div>
             <div className="col-2">
               <Link to="/">Reset</Link>
