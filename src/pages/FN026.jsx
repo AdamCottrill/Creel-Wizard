@@ -17,6 +17,14 @@ const FN026 = (props) => {
     <div className="card">
       <div className="card-header">Spatial Strata - FN026</div>
       <div className="card-body">
+        <div className="alert alert-warning" role="alert">
+          This form is likely to change as the modernization process progresses
+          and we collectively decide on how we want to capture spatial
+          information associated with our projects. For now, the minimal
+          requirement is a space name, description, and coordinate to plot a
+          point on a map for each spatial strata.
+        </div>
+
         <p>
           This form will be used to identify spatial strata used in the design
           of the project. If no spatial strata are defined, a single default
@@ -27,10 +35,16 @@ const FN026 = (props) => {
           known/existing spatial strata that have been used in previous
           projects.
         </p>
+        <p>
+          Like seasons, there is no limit on the number of spatial strata that
+          can be specified, however they must be consistent with these
+          constraints:
+        </p>
         <ul>
-          <li>Spatial strata can be either points or polygons</li>
+          <li>Space code must be unique within a project</li>
           <li>Every sample must belong to one, and only one spatial strata</li>
           <li>Spatial strata cannot overlap.</li>
+          <li>Spatial strata can be either points or polygons (some day)</li>
         </ul>
 
         <hr />

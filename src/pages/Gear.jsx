@@ -22,8 +22,8 @@ const Gear = (props) => {
           project and how the catch in those gears will be processed. Available
           gear choices will be dependent on the selected protocol, and available
           process types will be limited to those that are known for the selected
-          gear types - e.g. - Trap nets have a single process type, FWIN nets
-          can be by net or by panel.
+          gears - e.g. - Trap nets have a single process type, FWIN nets can be
+          by net or by panel.
         </p>
 
         <hr />
@@ -38,11 +38,12 @@ const Gear = (props) => {
                   </label>
 
                   <select
-                    id="select-protocol"
+                    id="select-gear"
                     {...register("gear")}
                     className="form-select"
                     aria-label="Select Gear"
                     required
+                    defaultValue={state.gear}
                   >
                     <option selected>Select gear...</option>
                     <option value="gl21">
@@ -68,12 +69,14 @@ const Gear = (props) => {
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          id="inlineCheckbox1"
-                          value="option1"
+                          name="process-type"
+                          id="process-type-1"
+                          value="1"
+                          {...register("process_type")}
                         />
                         <label
                           className="form-check-label"
-                          htmlFor="inlineCheckbox1"
+                          htmlFor="process-type-1"
                         >
                           By Net
                         </label>
@@ -82,12 +85,14 @@ const Gear = (props) => {
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          id="inlineCheckbox2"
-                          value="option2"
+                          name="process-type"
+                          id="process-type-2"
+                          value="2"
+                          {...register("process_type")}
                         />
                         <label
                           className="form-check-label"
-                          htmlFor="inlineCheckbox2"
+                          htmlFor="process-type-2"
                         >
                           By Mesh
                         </label>
@@ -96,12 +101,14 @@ const Gear = (props) => {
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          id="inlineCheckbox3"
-                          value="option3"
+                          name="process-type"
+                          id="process-type-3"
+                          value="3"
+                          {...register("process_type")}
                         />
                         <label
                           className="form-check-label"
-                          htmlFor="inlineCheckbox3"
+                          htmlFor="process-type-3"
                         >
                           By Panel
                         </label>
@@ -110,12 +117,14 @@ const Gear = (props) => {
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          id="inlineCheckbox4"
-                          value="option4"
+                          name="process-type"
+                          id="process-type-4"
+                          value="4"
+                          {...register("process_type")}
                         />
                         <label
                           className="form-check-label"
-                          htmlFor="inlineCheckbox4"
+                          htmlFor="process-type-4"
                         >
                           Panel Group
                         </label>

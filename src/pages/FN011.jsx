@@ -17,15 +17,13 @@ const FN011 = (props) => {
   return (
     <>
       <p>
-        This Fishnet Project Wizard will step through a number of forms to
+        This Fishnet Project Setup Wizard will step through a number of forms to
         collect basic information about your project. Once the forms are
-        complete, a project entry will be create in FN_Portal and a link to a
-        pre-configured data entry template database will be provided.
+        complete, a project entry will be created in FN_Portal and a link to a
+        pre-configured data entry template database will be provided for you to
+        download and populate.
       </p>
-      <p>
-        Lets get start. Can you tell us some basic information about the
-        project?
-      </p>
+      <p>Let's get started with some basic information about the project.</p>
       <div className="card">
         <div className="card-header">Basic Project Setup - FN011</div>
         <div className="card-body">
@@ -64,10 +62,11 @@ const FN011 = (props) => {
                   Project Lead
                 </label>
                 <select
-                  {...register("lake")}
+                  {...register("prj_ldr")}
                   className="form-select"
                   required
                   aria-label="Select Project Lead"
+                  defaultValue={state.prj_ldr}
                 >
                   <option selected>Select project lead...</option>
                   <option value="hs">Homer Simpson</option>
@@ -117,6 +116,7 @@ const FN011 = (props) => {
                   {...register("lake")}
                   className="form-select"
                   aria-label="Select Lake"
+                  defaultValue={state.lake}
                   required
                 >
                   <option selected>Select lake...</option>
@@ -139,6 +139,7 @@ const FN011 = (props) => {
                   className="form-select"
                   aria-label="Select Protocol"
                   required
+                  defaultValue={state.protocol}
                 >
                   <option selected>Select protocol...</option>
                   <option value="bsm">Broad Scale Monitoring (BSM)</option>

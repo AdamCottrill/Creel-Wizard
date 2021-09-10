@@ -24,15 +24,17 @@ const FN022 = (props) => {
           created using the project start and end dates.
         </p>
 
+        <p>
+          There is no limit on the number of seasons that can be specified,
+          however they must be consistent with these constraints:
+        </p>
         <ul>
-          <li>
-            There is no limit on the number of seasons that can be specified
-          </li>
+          <li>season code must be unique within a project</li>
           <li>season dates cannot overlap</li>
           <li>
             season dates must be contained within the projet start and end dates
           </li>
-          <li>Every sample must belong to one, and only one season</li>
+          <li>every sample must belong to one, and only one season</li>
         </ul>
 
         <hr />

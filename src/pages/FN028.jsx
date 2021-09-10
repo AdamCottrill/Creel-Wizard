@@ -25,8 +25,9 @@ const FN028 = (props) => {
         </p>
 
         <p>
-          It may be helpful to thing of modes as quick descriptions of how you
-          gear will be deployed (and reported on at the end of the project):
+          It may be helpful to think of modes as quick descriptions of how your
+          gear will be deployed (and reported on at the end of the project) for
+          example:
         </p>
 
         <ul>
@@ -34,6 +35,19 @@ const FN028 = (props) => {
           <li>GL89 canned in the thermocline along depth contours</li>
           <li>TP08 set on bottom perpendicular to shore</li>
         </ul>
+
+        <p>
+          The number of modes is limited to the combination of gears, orients,
+          and set types used in your project. Generally fewer modes are better
+          than more, and at least one mode is required for each gear.
+          Additionally, modes must be consistent with these constraints:
+        </p>
+        <ul>
+          <li>each mode code must be unique within a project</li>
+          <li>gear, orient, and set-type must be unique</li>
+          <li>every sample must belong to one, and only one mode</li>
+        </ul>
+
         <hr />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
