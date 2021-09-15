@@ -8,6 +8,7 @@ to a pre-configured data entry template database will be provided for
 you to download and populate.
 
 A live version of the application can be seen here:
+[https://adamcottrill.github.io/Fishnet-Project-Wizard/](https://adamcottrill.github.io/Fishnet-Project-Wizard/)
 
 
 ## Local development
