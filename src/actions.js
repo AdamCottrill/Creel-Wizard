@@ -14,13 +14,6 @@ export function updateFN011(state, payload) {
   };
 }
 
-export function updateFN022(state, payload) {
-  return {
-    ...state,
-    fn022: { ...payload },
-  };
-}
-
 //const initialState = {};
 
 export function resetState(state, payload) {

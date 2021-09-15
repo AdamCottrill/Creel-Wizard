@@ -152,7 +152,7 @@ const FN022 = (props) => {
                       type="button"
                       className="btn btn-outline-primary"
                       onClick={() => move(index, index + 1)}
-                      disabled={index == fields.length - 1}
+                      disabled={index === fields.length - 1}
                     >
                       <FaArrowDown />
                     </button>

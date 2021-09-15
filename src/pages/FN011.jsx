@@ -42,7 +42,6 @@ const FN011 = (props) => {
                   className="form-control"
                   id="prj_cd"
                   {...register("prj_cd")}
-                  //defaultValue={state.prj_cd}
                   required
                 />
               </div>
@@ -70,9 +69,9 @@ const FN011 = (props) => {
                   className="form-select"
                   required
                   aria-label="Select Project Lead"
-                  //defaultValue={state.prj_ldr}
+                  defaultValue=""
                 >
-                  <option selected>Select project lead...</option>
+                  <option value="">Select project lead...</option>
                   <option value="hs">Homer Simpson</option>
                   <option value="mb">Monty Burns</option>
                   <option value="bg">Barny Gumble</option>
@@ -91,7 +90,6 @@ const FN011 = (props) => {
                   className="form-control"
                   id="prj_date0"
                   {...register("prj_date0")}
-                  //defaultValue={state.prj_date0}
                   required
                 />
               </div>
@@ -105,7 +103,6 @@ const FN011 = (props) => {
                   className="form-control"
                   id="prj_date1"
                   {...register("prj_date1")}
-                  //defaultValue={state.prj_date1}
                   required
                 />
               </div>
@@ -120,10 +117,10 @@ const FN011 = (props) => {
                   {...register("lake")}
                   className="form-select"
                   aria-label="Select Lake"
-                  //defaultValue={state.lake}
+                  defaultValue=""
                   required
                 >
-                  <option selected>Select lake...</option>
+                  <option value="">Select lake...</option>
                   <option value="HU">Huron</option>
                   <option value="ER">Erie</option>
                   <option value="ON">Ontario</option>
@@ -143,9 +140,9 @@ const FN011 = (props) => {
                   className="form-select"
                   aria-label="Select Protocol"
                   required
-                  //defaultValue={state.protocol}
+                  defaultValue=""
                 >
-                  <option selected>Select protocol...</option>
+                  <option value="">Select protocol...</option>
                   <option value="bsm">Broad Scale Monitoring (BSM)</option>
                   <option value="fwin">
                     Fall Walleye Index Netting (FWIN)
