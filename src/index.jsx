@@ -1,13 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { StateMachineProvider, createStore } from "little-state-machine";
+
+import { DevTool } from "little-state-machine-devtools";
+
 import FN011 from "./pages/FN011";
 import Gear from "./pages/Gear";
 import FN022 from "./pages/FN022";
 import FN026 from "./pages/FN026";
 import FN028 from "./pages/FN028";
 import Result from "./pages/Result";
+
+import ResetLink from "./resetLink";
 
 //import "./styles.css";
 
@@ -23,7 +28,7 @@ function App() {
               <h1>FN Project Setup Wizard</h1>
             </div>
             <div className="col-2">
-              <Link to="/">Reset</Link>
+              <ResetLink />
             </div>
           </div>
 
@@ -35,6 +40,7 @@ function App() {
           <Route path="/result" component={Result} />
         </Router>
       </div>
+      {process.env.NODE_ENV !== "production" && <DevTool />}
     </StateMachineProvider>
   );
 }

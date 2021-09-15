@@ -1,16 +1,20 @@
 import React from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { withRouter } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 import { FaArrowRight } from "react-icons/fa";
 
-import updateAction from "../updateAction";
+import { updateFN011 } from "../actions";
 
 const FN011 = (props) => {
-  const { register, handleSubmit } = useForm();
-  const { actions, state } = useStateMachine({ updateAction });
+  const { actions, state } = useStateMachine({ updateFN011 });
+
+  const initialValues = state.fn011 || {};
+
+  const { register, handleSubmit } = useForm({ defaultValues: initialValues });
+
   const onSubmit = (data) => {
-    actions.updateAction(data);
+    actions.updateFN011(data);
     props.history.push("./fn022");
   };
 
@@ -38,7 +42,7 @@ const FN011 = (props) => {
                   className="form-control"
                   id="prj_cd"
                   {...register("prj_cd")}
-                  defaultValue={state.prj_cd}
+                  //defaultValue={state.prj_cd}
                   required
                 />
               </div>
@@ -52,7 +56,7 @@ const FN011 = (props) => {
                   className="form-control"
                   id="prj_nm"
                   {...register("prj_nm")}
-                  defaultValue={state.prj_nm}
+                  //defaultValue={state.prj_nm}
                   required
                 />
               </div>
@@ -66,7 +70,7 @@ const FN011 = (props) => {
                   className="form-select"
                   required
                   aria-label="Select Project Lead"
-                  defaultValue={state.prj_ldr}
+                  //defaultValue={state.prj_ldr}
                 >
                   <option selected>Select project lead...</option>
                   <option value="hs">Homer Simpson</option>
@@ -87,7 +91,7 @@ const FN011 = (props) => {
                   className="form-control"
                   id="prj_date0"
                   {...register("prj_date0")}
-                  defaultValue={state.prj_date0}
+                  //defaultValue={state.prj_date0}
                   required
                 />
               </div>
@@ -101,7 +105,7 @@ const FN011 = (props) => {
                   className="form-control"
                   id="prj_date1"
                   {...register("prj_date1")}
-                  defaultValue={state.prj_date1}
+                  //defaultValue={state.prj_date1}
                   required
                 />
               </div>
@@ -116,7 +120,7 @@ const FN011 = (props) => {
                   {...register("lake")}
                   className="form-select"
                   aria-label="Select Lake"
-                  defaultValue={state.lake}
+                  //defaultValue={state.lake}
                   required
                 >
                   <option selected>Select lake...</option>
@@ -139,7 +143,7 @@ const FN011 = (props) => {
                   className="form-select"
                   aria-label="Select Protocol"
                   required
-                  defaultValue={state.protocol}
+                  //defaultValue={state.protocol}
                 >
                   <option selected>Select protocol...</option>
                   <option value="bsm">Broad Scale Monitoring (BSM)</option>
@@ -165,9 +169,24 @@ const FN011 = (props) => {
                 className="form-control"
                 id="comment0"
                 {...register("comment0")}
-                defaultValue={state.comment0}
+                //defaultValue={state.comment0}
                 required
               />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="field-protocol" className="form-label">
+                Field Protocol:
+              </label>
+              <input
+                className="form-control"
+                type="file"
+                id="field-protocol"
+                accept=".doc,.docx,.pdf"
+              />
+              <div id="field-protocol-help" className="form-text">
+                Protocol will be uploaded to Project Tracker
+              </div>
             </div>
 
             <hr />

@@ -1,6 +1,6 @@
 import React from "react";
 import { useStateMachine } from "little-state-machine";
-import updateAction from "../updateAction";
+import { updateAction } from "../actions";
 
 const Result = (props) => {
   const { state } = useStateMachine(updateAction);
@@ -13,7 +13,7 @@ const Result = (props) => {
         Your project has been created with the following information. You can
         download a pre-populated template database from the the projects detail
         page here:{" "}
-        <button type="button" class="btn btn-link">
+        <button type="button" className="btn btn-link">
           {state.prj_cd}
         </button>
       </p>

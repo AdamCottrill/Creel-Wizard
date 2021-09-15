@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { withRouter, Link } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 import { FaPlus, FaArrowRight, FaArrowLeft } from "react-icons/fa";
-import updateAction from "../updateAction";
+
+import { updateAction } from "../actions";
 
 const FN026 = (props) => {
   const { register, handleSubmit } = useForm();
@@ -60,7 +61,7 @@ const FN026 = (props) => {
                 className="form-control"
                 id="space"
                 {...register("space")}
-                defaultValue={state.space || "00"}
+                //defaultValue={state.space || "00"}
                 required
               />
             </div>
@@ -74,7 +75,7 @@ const FN026 = (props) => {
                 className="form-control"
                 id="space-des"
                 {...register("space_des")}
-                defaultValue={state.space_des || "Default Space"}
+                //defaultValue={state.space_des || "Default Space"}
                 required
               />
             </div>
@@ -88,7 +89,7 @@ const FN026 = (props) => {
                 className="form-control"
                 id="dd-lat"
                 {...register("dd_lat")}
-                defaultValue={state.dd_lat}
+                //defaultValue={state.dd_lat}
                 required
               />
             </div>
@@ -102,7 +103,7 @@ const FN026 = (props) => {
                 className="form-control"
                 id="dd-lon"
                 {...register("dd_lon")}
-                defaultValue={state.dd_lon}
+                //defaultValue={state.dd_lon}
                 required
               />
             </div>

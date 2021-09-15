@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { withRouter, Link } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 import { FaPlus, FaArrowRight, FaArrowLeft } from "react-icons/fa";
-import updateAction from "../updateAction";
+import { updateAction } from "../actions";
 
 const Gear = (props) => {
   const { register, handleSubmit } = useForm();
