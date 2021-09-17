@@ -106,11 +106,11 @@ const FN011 = (props) => {
                     />
                   )}
                   name={"prj_ldr"}
-                  rules={{ required: true }}
+                  rules={{ required: "Please select a project lead." }}
                 />
                 {errors.prj_ldr && (
                   <div className="invalid-feedback">
-                    Please select a project lead.
+                    {errors.prj_cd.message}
                   </div>
                 )}
               </div>
@@ -190,12 +190,12 @@ const FN011 = (props) => {
                     />
                   )}
                   name={"protocol"}
-                  rules={{ required: true }}
+                  rules={{ required: "Please select a protocol" }}
                 />
 
                 {errors.protocol && (
                   <div className="invalid-feedback">
-                    Please select a protocol.
+                    {errors.protocol.message}
                   </div>
                 )}
               </div>

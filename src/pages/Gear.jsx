@@ -1,5 +1,6 @@
 import React from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
+import Select from "react-select";
 import { withRouter, Link } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 
@@ -17,32 +18,48 @@ import { updateAction } from "../actions";
 const Gear = (props) => {
   const { state, actions } = useStateMachine({ updateAction });
 
-  const process_types = [
-    { id: 1, name: "whole net" },
-    { id: 2, name: "by panel by mesh" },
-    { id: 3, name: "by mesh" },
-    { id: 4, name: "by panel" },
-    { id: 5, name: "by panel groups" },
+  // const process_types = [
+  //   { id: 1, name: "whole net" },
+  //   { id: 2, name: "by panel by mesh" },
+  //   { id: 3, name: "by mesh" },
+  //   { id: 4, name: "by panel" },
+  //   { id: 5, name: "by panel groups" },
+  // ];
+
+  const gears = [
+    { value: "gl21", label: "GL21 - Huron Offshore Index Gillnet" },
+    { value: "gl50", label: "GL50 - FWIN Gillnet" },
+    { value: "na1", label: "NA1 - BSM Large Mesh Gillnet" },
+    { value: "on2", label: "ON2 - BSM Small Mesh Gillnet" },
+    { value: "tp08", label: "TP08 - 8' NCSIN Trapnet" },
+    { value: "gl38", label: "GL38 - 38 mm SLIN/FLIN Gillnet" },
+    { value: "gl51", label: "GL51 - 51 mm SLIN/FLIN Gillnet" },
+    { value: "gl64", label: "GL64 - 64 mm SLIN/FLIN Gillnet" },
   ];
 
   const defaultValues = [
     {
-      gear_code: "",
-      process_types: process_types.map((ptype) => {
-        return { id: ptype.id, name: ptype.name, selected: false };
-      }),
+      gear_code: { value: "", label: "Select a gear..." },
+      // process_types: process_types.map((ptype) => {
+      //   return { id: ptype.id, name: ptype.name, selected: false };
+      // }),
     },
   ];
 
-  const initialValues = state.gr || defaultValues;
+  const initialValues = state.gear_array || defaultValues;
 
-  const { register, control, handleSubmit } = useForm({
-    defaultValues: { gr: initialValues },
+  const {
+    //    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: { gear_array: initialValues },
   });
 
   const { fields, append, remove, move } = useFieldArray({
     control,
-    name: "gr",
+    name: "gear_array",
   });
 
   const onSubmit = (data) => {
@@ -66,85 +83,88 @@ const Gear = (props) => {
         <hr />
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          {fields.map((item, index) => {
+          {fields.map((field, index) => {
             return (
-              <div className="card mb-2" key={item.id}>
+              <div className="card mb-2" key={field.id}>
                 <div className="card-body">
                   <div className="row">
                     <div className="col-3 mb-3">
-                      <label
-                        htmlFor={`select-gear-${index}`}
-                        className="form-label"
-                      >
-                        Gear
-                      </label>
+                      <Controller
+                        key={field.id}
+                        name={`gear_array.${index}.gear_code`}
+                        isClearable
+                        control={control}
+                        render={({ field }) => (
+                          <Select {...field} options={gears} />
+                        )}
+                      />
 
-                      <select
-                        id={`select-gear-${index}`}
-                        {...register(`gr.${index}.gear_code`)}
-                        className="form-select"
-                        aria-label="Select Gear"
-                        required
-                        defaultValue=""
-                      >
-                        <option value="">Select gear...</option>
-                        <option value="gl21">
-                          GL21 - Huron Offshore Index Gillnet
-                        </option>
-                        <option value="gl50">GL50 - FWIN Gillnet</option>
-                        <option value="na1">
-                          NA1 - BSM Large Mesh Gillnet
-                        </option>
-                        <option value="on2">
-                          ON2 - BSM Small Mesh Gillnet
-                        </option>
-                        <option value="tp08">TP08 - 8' NCSIN Trapnet </option>
-                        <option value="gl38">
-                          GL38 - 38 mm SLIN/FLIN Gillnet
-                        </option>
-                        <option value="gl51">
-                          GL51 - 51 mm SLIN/FLIN Gillnet
-                        </option>
-                        <option value="gl64">
-                          GL64 - 64 mm SLIN/FLIN Gillnet
-                        </option>
-                      </select>
-                    </div>
+                      {/* <Controller */}
+                      {/*   control={control} */}
+                      {/*   defaultValue="" */}
+                      {/*   name={`select-gear-${index}`} */}
+                      {/*   render={({ field: { onChange, value, name, ref } }) => { */}
+                      {/*     //debugger; */}
+                      {/*     return ( */}
+                      {/*       <Select */}
+                      {/*         id={`select-gear-${index}`} */}
+                      {/*         //{...register(`gr.${index}.gear_code`)} */}
+                      {/*         inputRef={ref} */}
+                      {/*         aria-label="Select Gear" */}
+                      {/*         placeholder="Select gear..." */}
+                      {/*         value={gears.find((c) => c.value === value)} */}
+                      {/*         name={name} */}
+                      {/*         options={gears} */}
+                      {/*         defaultValue={defaultValues.gear_code} */}
+                      {/*         onChange={(field) => { */}
+                      {/*           onChange(field.value); */}
+                      {/*         }} */}
+                      {/*       /> */}
+                      {/*     ); */}
+                      {/*   }} */}
+                      {/* /> */}
 
-                    <div className="col-7 mb-3">
-                      <div className="row">
-                        <p>Process Type:</p>
-                      </div>
-                      <div className="row">
-                        <div className="col-12">
-                          {(item.process_types || []).map((ptype) => {
-                            return (
-                              <div
-                                className="form-check form-check-inline"
-                                key={`process-type-${index}-${ptype.id}`}
-                              >
-                                <input
-                                  className="form-check-input"
-                                  type="checkbox"
-                                  name={`process-type-${index}`}
-                                  id={`process-type-${index}-${ptype.id}`}
-                                  value={`process-type-${ptype.selected}`}
-                                  {...register(
-                                    `gr.process_types.${index}.${ptype.id}`
-                                  )}
-                                />
-                                <label
-                                  className="form-check-label"
-                                  htmlFor={`process-type-${index}-${ptype.id}`}
-                                >
-                                  {ptype.name}
-                                </label>
-                              </div>
-                            );
-                          })}
+                      {errors.gear && (
+                        <div className="invalid-feedback">
+                          Please select a gear.
                         </div>
-                      </div>
+                      )}
                     </div>
+
+                    {/* <div className="col-7 mb-3"> */}
+                    {/*   <div className="row"> */}
+                    {/*     <p>Process Type:</p> */}
+                    {/*   </div> */}
+                    {/*   <div className="row"> */}
+                    {/*     <div className="col-12"> */}
+                    {/*       {(field.process_types || []).map((ptype) => { */}
+                    {/*         return ( */}
+                    {/*           <div */}
+                    {/*             className="form-check form-check-inline" */}
+                    {/*             key={`process-type-${index}-${ptype.id}`} */}
+                    {/*           > */}
+                    {/*             <input */}
+                    {/*               className="form-check-input" */}
+                    {/*               type="checkbox" */}
+                    {/*               name={`process-type-${index}`} */}
+                    {/*               id={`process-type-${index}-${ptype.id}`} */}
+                    {/*               value={`process-type-${ptype.selected}`} */}
+                    {/*               {...register( */}
+                    {/*                 `gear_array.process_types.${index}.${ptype.id}` */}
+                    {/*               )} */}
+                    {/*             /> */}
+                    {/*             <label */}
+                    {/*               className="form-check-label" */}
+                    {/*               htmlFor={`process-type-${index}-${ptype.id}`} */}
+                    {/*             > */}
+                    {/*               {ptype.name} */}
+                    {/*             </label> */}
+                    {/*           </div> */}
+                    {/*         ); */}
+                    {/*       })} */}
+                    {/*     </div> */}
+                    {/*   </div> */}
+                    {/* </div> */}
 
                     <div className="col-2 mb-3 align-self-end">
                       <div

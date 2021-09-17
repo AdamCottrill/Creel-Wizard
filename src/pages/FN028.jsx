@@ -126,9 +126,7 @@ const FN028 = (props) => {
                     required
                     defaultValue=""
                   >
-                    <option value="" selected>
-                      Select gear...
-                    </option>
+                    <option value="">Select gear...</option>
                     <option value="gl21">
                       GL21 - Huron Offshore Index Gillnet
                     </option>
