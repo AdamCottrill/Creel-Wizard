@@ -1,5 +1,6 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import Select from "react-select";
 import { withRouter } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 import { FaArrowRight } from "react-icons/fa";
@@ -11,7 +12,29 @@ const FN011 = (props) => {
 
   const initialValues = state.fn011 || {};
 
-  const { register, handleSubmit } = useForm({ defaultValues: initialValues });
+  const project_leads = [
+    { value: "hs", label: "Homer Simpson" },
+    { value: "mb", label: "Monty Burns" },
+    { value: "bg", label: "Barny Gumble" },
+    { value: "fn", label: "Ned Flanders" },
+  ];
+
+  const protocols = [
+    { value: "bsm", label: "Broad Scale Monitoring (BSM)" },
+    { value: "fwin", label: "Fall Walleye Index Netting (FWIN)" },
+    { value: "osia", label: "Offshore Index (OSIA)" },
+    { value: "estn", label: "Early Spring Trap Netting (ESTN)" },
+    { value: "nscin", label: "Near Shore Community Index Netting (NSCIN)" },
+  ];
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    defaultValues: initialValues,
+  });
 
   const onSubmit = (data) => {
     actions.updateFN011(data);
@@ -64,19 +87,32 @@ const FN011 = (props) => {
                 <label htmlFor="select-prj-ldr" className="form-label">
                   Project Lead
                 </label>
-                <select
-                  {...register("prj_ldr")}
-                  className="form-select"
-                  required
-                  aria-label="Select Project Lead"
-                  defaultValue=""
-                >
-                  <option value="">Select project lead...</option>
-                  <option value="hs">Homer Simpson</option>
-                  <option value="mb">Monty Burns</option>
-                  <option value="bg">Barny Gumble</option>
-                  <option value="fn">Ned Flanders</option>
-                </select>
+
+                <Controller
+                  control={control}
+                  render={({ field: { onChange, value, name, ref } }) => (
+                    <Select
+                      inputRef={ref}
+                      value={project_leads.find((c) => c.value === value)}
+                      name={name}
+                      placeholder="Select project lead..."
+                      className={
+                        errors.prj_ldr ? "form-control is-invalid" : null
+                      }
+                      options={project_leads}
+                      onChange={(prj_ldr) => {
+                        onChange(prj_ldr.value);
+                      }}
+                    />
+                  )}
+                  name={"prj_ldr"}
+                  rules={{ required: true }}
+                />
+                {errors.prj_ldr && (
+                  <div className="invalid-feedback">
+                    Please select a project lead.
+                  </div>
+                )}
               </div>
             </div>
 
@@ -134,25 +170,34 @@ const FN011 = (props) => {
                   Protocol
                 </label>
 
-                <select
-                  id="select-protocol"
-                  {...register("protocol")}
-                  className="form-select"
-                  aria-label="Select Protocol"
-                  required
-                  defaultValue=""
-                >
-                  <option value="">Select protocol...</option>
-                  <option value="bsm">Broad Scale Monitoring (BSM)</option>
-                  <option value="fwin">
-                    Fall Walleye Index Netting (FWIN)
-                  </option>
-                  <option value="osia">Offshore Index (OSIA)</option>
-                  <option value="estn">Early Spring Trap Netting (ESTN)</option>
-                  <option value="nscin">
-                    Near Shore Community Index Netting (NSCIN)
-                  </option>
-                </select>
+                <Controller
+                  control={control}
+                  render={({ field: { onChange, value, name, ref } }) => (
+                    <Select
+                      id="select-protocol"
+                      inputRef={ref}
+                      className={
+                        errors.protocol ? "form-control is-invalid" : null
+                      }
+                      aria-label="Select Protocol"
+                      placeholder="Select protocol..."
+                      value={protocols.find((c) => c.value === value)}
+                      name={name}
+                      options={protocols}
+                      onChange={(item) => {
+                        onChange(item.value);
+                      }}
+                    />
+                  )}
+                  name={"protocol"}
+                  rules={{ required: true }}
+                />
+
+                {errors.protocol && (
+                  <div className="invalid-feedback">
+                    Please select a protocol.
+                  </div>
+                )}
               </div>
             </div>
 
