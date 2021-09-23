@@ -14,7 +14,7 @@ const Result = (props) => {
         download a pre-populated template database from the the projects detail
         page here:{" "}
         <button type="button" className="btn btn-link">
-          {state.prj_cd}
+          {state.fn011.prj_cd}
         </button>
       </p>
 
