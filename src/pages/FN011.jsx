@@ -1,31 +1,37 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
+import { useQuery } from "react-query";
 import { withRouter } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 import { FaArrowRight } from "react-icons/fa";
+
+import { getProjectLeads, getProtocols, getLakes } from "../services/api";
 
 import { updateFN011 } from "../actions";
 
 const FN011 = (props) => {
   const { actions, state } = useStateMachine({ updateFN011 });
 
+  const {
+    data: project_leads,
+    error: prj_ldr_error,
+    isLoading: prj_ldr_loading,
+  } = useQuery("project_leads", getProjectLeads);
+
+  const {
+    data: protocols,
+    error: protocols_error,
+    isLoading: protocols_loading,
+  } = useQuery("protocols", getProtocols);
+
+  const {
+    data: lakes,
+    error: lakes_error,
+    isLoading: lakes_loading,
+  } = useQuery("lakes", getLakes);
+
   const initialValues = state.fn011 || {};
-
-  const project_leads = [
-    { value: "hs", label: "Homer Simpson" },
-    { value: "mb", label: "Monty Burns" },
-    { value: "bg", label: "Barny Gumble" },
-    { value: "fn", label: "Ned Flanders" },
-  ];
-
-  const protocols = [
-    { value: "bsm", label: "Broad Scale Monitoring (BSM)" },
-    { value: "fwin", label: "Fall Walleye Index Netting (FWIN)" },
-    { value: "osia", label: "Offshore Index (OSIA)" },
-    { value: "estn", label: "Early Spring Trap Netting (ESTN)" },
-    { value: "nscin", label: "Near Shore Community Index Netting (NSCIN)" },
-  ];
 
   const {
     register,
@@ -40,6 +46,19 @@ const FN011 = (props) => {
     actions.updateFN011(data);
     props.history.push("./fn022");
   };
+
+  if (prj_ldr_loading || protocols_loading || lakes_loading)
+    return "Loading...";
+
+  if (prj_ldr_error || protocols_error || lakes_error) {
+    return (
+      <div>
+        "An error has occurred: "{prj_ldr_error && prj_ldr_error.message}
+        {protocols_error && protocols_error.message}
+        {lakes_error && lakes_error.message}
+      </div>
+    );
+  }
 
   return (
     <>
@@ -157,11 +176,13 @@ const FN011 = (props) => {
                   required
                 >
                   <option value="">Select lake...</option>
-                  <option value="HU">Huron</option>
-                  <option value="ER">Erie</option>
-                  <option value="ON">Ontario</option>
-                  <option value="SC">St. Clare</option>
-                  <option value="SU">Superior</option>
+                  {lakes.map((lake) => {
+                    return (
+                      <option key={lake.value} value="{lake.value}">
+                        {lake.label}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
 

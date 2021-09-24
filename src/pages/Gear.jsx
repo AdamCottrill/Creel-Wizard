@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import Select from "react-select";
+import { useQuery } from "react-query";
 import { withRouter, Link } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 
@@ -13,10 +14,18 @@ import {
   FaArrowLeft,
 } from "react-icons/fa";
 
+import { getGears } from "../services/api";
+
 import { updateAction } from "../actions";
 
 const Gear = (props) => {
   const { state, actions } = useStateMachine({ updateAction });
+
+  const {
+    data: gears,
+    error: gears_error,
+    isLoading: gears_loading,
+  } = useQuery("gears", getGears);
 
   // const process_types = [
   //   { id: 1, name: "whole net" },
@@ -26,16 +35,16 @@ const Gear = (props) => {
   //   { id: 5, name: "by panel groups" },
   // ];
 
-  const gears = [
-    { value: "gl21", label: "GL21 - Huron Offshore Index Gillnet" },
-    { value: "gl50", label: "GL50 - FWIN Gillnet" },
-    { value: "na1", label: "NA1 - BSM Large Mesh Gillnet" },
-    { value: "on2", label: "ON2 - BSM Small Mesh Gillnet" },
-    { value: "tp08", label: "TP08 - 8' NCSIN Trapnet" },
-    { value: "gl38", label: "GL38 - 38 mm SLIN/FLIN Gillnet" },
-    { value: "gl51", label: "GL51 - 51 mm SLIN/FLIN Gillnet" },
-    { value: "gl64", label: "GL64 - 64 mm SLIN/FLIN Gillnet" },
-  ];
+  // const gears = [
+  //   { value: "gl21", label: "GL21 - Huron Offshore Index Gillnet" },
+  //   { value: "gl50", label: "GL50 - FWIN Gillnet" },
+  //   { value: "na1", label: "NA1 - BSM Large Mesh Gillnet" },
+  //   { value: "on2", label: "ON2 - BSM Small Mesh Gillnet" },
+  //   { value: "tp08", label: "TP08 - 8' NCSIN Trapnet" },
+  //   { value: "gl38", label: "GL38 - 38 mm SLIN/FLIN Gillnet" },
+  //   { value: "gl51", label: "GL51 - 51 mm SLIN/FLIN Gillnet" },
+  //   { value: "gl64", label: "GL64 - 64 mm SLIN/FLIN Gillnet" },
+  // ];
 
   const defaultValues = [
     {
@@ -61,6 +70,12 @@ const Gear = (props) => {
     control,
     name: "gear_array",
   });
+
+  if (gears_loading) return "Loading...";
+
+  if (gears_error) return "An error has occurred: " + gears_error.message;
+
+  if (gears) console.log("gears = ", gears);
 
   const onSubmit = (data) => {
     actions.updateAction(data);
