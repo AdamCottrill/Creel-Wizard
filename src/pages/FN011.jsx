@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import { useQuery } from "react-query";
@@ -12,6 +12,8 @@ import { updateFN011 } from "../actions";
 
 const FN011 = (props) => {
   const { actions, state } = useStateMachine({ updateFN011 });
+
+  const [showRules, setShowRules] = useState(false);
 
   const {
     data: project_leads,
@@ -71,8 +73,41 @@ const FN011 = (props) => {
       </p>
       <p>Let's get started with some basic information about the project.</p>
       <div className="card">
-        <div className="card-header">Basic Project Setup - FN011</div>
+        <div className="card-header">
+          <div className="d-flex justify-content-between">
+            Basic Project Setup - FN011
+            <button
+              type="button"
+              className="btn btn-link"
+              onClick={() => setShowRules(!showRules)}
+            >
+              Validation Rules
+            </button>
+          </div>
+        </div>
         <div className="card-body">
+          {showRules && (
+            <div className="card mt-2 mb-3">
+              <div className="card-body">
+                <h5 className="card-title">Validation Rules</h5>
+                <ul>
+                  <li>project code must be consistent with lake and dates</li>
+                  <li>
+                    project code must be valid project code - should we limit
+                    project types here to 'IA' and 'IS' projects?
+                  </li>
+                  <li>
+                    project end must occur on or after project start in the same
+                    year
+                  </li>
+                  <li>
+                    project year cannot be less than 1950 (say) and no more than
+                    the current year plus 1
+                  </li>
+                </ul>
+              </div>
+            </div>
+          )}
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row">
               <div className="col-4 mb-3">

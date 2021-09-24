@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { withRouter, Link } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
@@ -16,6 +16,8 @@ import {
 
 const FN028 = (props) => {
   const { state, actions } = useStateMachine({ updateAction });
+
+  const [showRules, setShowRules] = useState(false);
 
   const defaultValues = [
     {
@@ -45,7 +47,18 @@ const FN028 = (props) => {
 
   return (
     <div className="card">
-      <div className="card-header">Fishing Mode - FN028</div>
+      <div className="card-header">
+        <div className="d-flex justify-content-between">
+          Fishing Mode - FN028
+          <button
+            type="button"
+            className="btn btn-link"
+            onClick={() => setShowRules(!showRules)}
+          >
+            Validation Rules
+          </button>
+        </div>
+      </div>
       <div className="card-body">
         <p>
           This form will be used to capture information on the fishing modes
@@ -69,13 +82,25 @@ const FN028 = (props) => {
           The number of modes is limited to the combination of gears, orients,
           and set types used in your project. Generally fewer modes are better
           than more, and at least one mode is required for each gear.
-          Additionally, modes must be consistent with these constraints:
         </p>
-        <ul>
-          <li>each mode code must be unique within a project</li>
-          <li>combinaions of gear, orient, and set-type must be unique</li>
-          <li>every sample must belong to one, and only one mode</li>
-        </ul>
+
+        {showRules && (
+          <div className="card mt-2 mb-3">
+            <div className="card-body">
+              <h5 className="card-title">Validation Rules</h5>
+              <ul>
+                <li>each mode code must be unique within a project</li>
+                <li>each mode descriptions must be unique</li>
+                <li>each gear is presented at least once.</li>
+                <li>
+                  combinaions of gear, orient, and set-type must be unique
+                </li>
+                <li>all fields are required</li>
+                <li>every sample must belong to one, and only one mode</li>
+              </ul>
+            </div>
+          </div>
+        )}
 
         <hr />
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -216,6 +241,7 @@ const FN028 = (props) => {
                       type="button"
                       className="btn btn-outline-danger"
                       onClick={() => remove(index)}
+                      disabled={fields.length === 1}
                     >
                       <FaTrash />
                     </button>

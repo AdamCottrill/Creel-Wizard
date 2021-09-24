@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { useForm, useFieldArray } from "react-hook-form";
 import { withRouter, Link } from "react-router-dom";
@@ -16,6 +16,8 @@ import { updateAction } from "../actions";
 
 const FN022 = (props) => {
   const { state, actions } = useStateMachine({ updateAction });
+
+  const [showRules, setShowRules] = useState(false);
 
   const defaultValues = [
     {
@@ -47,7 +49,18 @@ const FN022 = (props) => {
 
   return (
     <div className="card">
-      <div className="card-header">Seasons - FN022</div>
+      <div className="card-header">
+        <div className="d-flex justify-content-between">
+          Seasons - FN022
+          <button
+            type="button"
+            className="btn btn-link"
+            onClick={() => setShowRules(!showRules)}
+          >
+            Validation Rules
+          </button>
+        </div>
+      </div>
       <div className="card-body">
         <p>
           This form will be used to capture informatin about the seasons
@@ -56,18 +69,25 @@ const FN022 = (props) => {
           created using the project start and end dates.
         </p>
 
-        <p>
-          There is no limit on the number of seasons that can be specified,
-          however they must be consistent with these constraints:
-        </p>
-        <ul>
-          <li>season code must be unique within a project</li>
-          <li>season dates cannot overlap</li>
-          <li>
-            season dates must be contained within the projet start and end dates
-          </li>
-          <li>every sample must belong to one, and only one season</li>
-        </ul>
+        <p>There is no limit on the number of seasons that can be specified.</p>
+
+        {showRules && (
+          <div className="card mt-2 mb-3">
+            <div className="card-body">
+              <h5 className="card-title">Validation Rules</h5>
+              <ul>
+                <li>season code must be unique within a project</li>
+                <li>season descriptions must be unique within a project</li>
+                <li>
+                  season dates must be contained within the projet start and end
+                  dates
+                </li>
+                <li>season dates cannot overlap</li>
+                <li>every sample must belong to one, and only one season</li>
+              </ul>
+            </div>
+          </div>
+        )}
 
         <hr />
 
@@ -160,6 +180,7 @@ const FN022 = (props) => {
                       type="button"
                       className="btn btn-outline-danger"
                       onClick={() => remove(index)}
+                      disabled={fields.length === 1}
                     >
                       <FaTrash />
                     </button>

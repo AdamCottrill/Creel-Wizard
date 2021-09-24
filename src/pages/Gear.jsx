@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import Select from "react-select";
 import { useQuery } from "react-query";
@@ -21,6 +21,8 @@ import { updateAction } from "../actions";
 const Gear = (props) => {
   const { state, actions } = useStateMachine({ updateAction });
 
+  const [showRules, setShowRules] = useState(false);
+
   const {
     data: gears,
     error: gears_error,
@@ -35,23 +37,9 @@ const Gear = (props) => {
   //   { id: 5, name: "by panel groups" },
   // ];
 
-  // const gears = [
-  //   { value: "gl21", label: "GL21 - Huron Offshore Index Gillnet" },
-  //   { value: "gl50", label: "GL50 - FWIN Gillnet" },
-  //   { value: "na1", label: "NA1 - BSM Large Mesh Gillnet" },
-  //   { value: "on2", label: "ON2 - BSM Small Mesh Gillnet" },
-  //   { value: "tp08", label: "TP08 - 8' NCSIN Trapnet" },
-  //   { value: "gl38", label: "GL38 - 38 mm SLIN/FLIN Gillnet" },
-  //   { value: "gl51", label: "GL51 - 51 mm SLIN/FLIN Gillnet" },
-  //   { value: "gl64", label: "GL64 - 64 mm SLIN/FLIN Gillnet" },
-  // ];
-
   const defaultValues = [
     {
       gear_code: { value: "", label: "Select a gear..." },
-      // process_types: process_types.map((ptype) => {
-      //   return { id: ptype.id, name: ptype.name, selected: false };
-      // }),
     },
   ];
 
@@ -84,7 +72,18 @@ const Gear = (props) => {
 
   return (
     <div className="card">
-      <div className="card-header">Gear and Process Types</div>
+      <div className="card-header">
+        <div className="d-flex justify-content-between">
+          Gear and Process Types
+          <button
+            type="button"
+            className="btn btn-link"
+            onClick={() => setShowRules(!showRules)}
+          >
+            Validation Rules
+          </button>
+        </div>
+      </div>
       <div className="card-body">
         <p>
           This form will capture which gears are going to be used in this
@@ -94,6 +93,18 @@ const Gear = (props) => {
           gears - e.g. - Trap nets have a single process type, FWIN nets can be
           by net or by panel.
         </p>
+
+        {showRules && (
+          <div className="card mt-2 mb-3">
+            <div className="card-body">
+              <h5 className="card-title">Validation Rules</h5>
+              <ul>
+                <li>at least one gear and one process type is required.</li>
+                <li>gears must be unique ('GL50' can't be selected twice)</li>
+              </ul>
+            </div>
+          </div>
+        )}
 
         <hr />
 
@@ -207,6 +218,7 @@ const Gear = (props) => {
                           type="button"
                           className="btn btn-outline-danger"
                           onClick={() => remove(index)}
+                          disabled={fields.length === 1}
                         >
                           <FaTrash />
                         </button>

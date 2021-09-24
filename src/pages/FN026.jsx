@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { withRouter, Link } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
@@ -15,6 +15,8 @@ import { updateAction } from "../actions";
 
 const FN026 = (props) => {
   const { state, actions } = useStateMachine({ updateAction });
+
+  const [showRules, setShowRules] = useState(false);
 
   const defaultValues = [
     {
@@ -43,7 +45,18 @@ const FN026 = (props) => {
 
   return (
     <div className="card">
-      <div className="card-header">Spatial Strata - FN026</div>
+      <div className="card-header">
+        <div className="d-flex justify-content-between">
+          Spatial Strata - FN026
+          <button
+            type="button"
+            className="btn btn-link"
+            onClick={() => setShowRules(!showRules)}
+          >
+            Validation Rules
+          </button>
+        </div>
+      </div>
       <div className="card-body">
         <div className="alert alert-warning" role="alert">
           This form is likely to change as the modernization process progresses
@@ -65,15 +78,30 @@ const FN026 = (props) => {
         </p>
         <p>
           Like seasons, there is no limit on the number of spatial strata that
-          can be specified, however they must be consistent with these
-          constraints:
+          can be specified.
         </p>
-        <ul>
-          <li>Space code must be unique within a project</li>
-          <li>Every sample must belong to one, and only one spatial strata</li>
-          <li>Spatial strata cannot overlap.</li>
-          <li>Spatial strata can be either points or polygons (some day)</li>
-        </ul>
+
+        {showRules && (
+          <div className="card mt-2 mb-3">
+            <div className="card-body">
+              <h5 className="card-title">Validation Rules</h5>
+              <ul>
+                <li>Space code must be unique within a project</li>
+                <li>
+                  Every sample must belong to one, and only one spatial strata
+                </li>
+                <li>Spatial strata cannot overlap.</li>
+                <li>
+                  Spatial strata can be either points or polygons (some day)
+                </li>
+                <li>
+                  Latidude and longitude represent the centroid of the spatial
+                  strata and must be within the envelope of the lake
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
 
         <hr />
 
@@ -162,6 +190,7 @@ const FN026 = (props) => {
                     type="button"
                     className="btn btn-outline-danger"
                     onClick={() => remove(index)}
+                    disabled={fields.length === 1}
                   >
                     <FaTrash />
                   </button>
