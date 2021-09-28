@@ -50,8 +50,8 @@ function App() {
             <Route path="/result" component={Result} />
           </Router>
         </div>
-        {process.env.NODE_ENV !== "production" && <DevTool />}
       </QueryClientProvider>
+      {process.env.NODE_ENV !== "production" && <DevTool />}
     </StateMachineProvider>
   );
 }

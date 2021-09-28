@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import Select from "react-select";
+import { useForm } from "react-hook-form";
+
 import { useQuery } from "react-query";
 import { withRouter } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
@@ -11,7 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { getProjectLeads, getProtocols, getLakes } from "../services/api";
 
 import { FN011schema } from "../schemas/schemas";
-import { Input } from "../components/Input";
+import { Input, Select, ControlledSelect } from "../components/FormControls";
 import { updateFN011 } from "../actions";
 
 const FN011 = (props) => {
@@ -47,6 +47,7 @@ const FN011 = (props) => {
   } = useForm({
     defaultValues: initialValues,
     resolver: yupResolver(FN011schema),
+    mode: "onBlur",
   });
 
   const onSubmit = (data) => {
@@ -135,35 +136,14 @@ const FN011 = (props) => {
               </div>
 
               <div className="col-4 mb-3">
-                <label htmlFor="select-prj-ldr" className="form-label">
-                  Project Lead
-                </label>
-
-                <Controller
+                <ControlledSelect
+                  name="prj_ldr"
+                  label="Project Lead"
+                  options={project_leads}
                   control={control}
-                  render={({ field: { onChange, value, name, ref } }) => (
-                    <Select
-                      inputRef={ref}
-                      value={project_leads.find((c) => c.value === value)}
-                      name={name}
-                      placeholder="Select project lead..."
-                      className={
-                        errors.prj_ldr ? "form-control is-invalid" : null
-                      }
-                      options={project_leads}
-                      onChange={(prj_ldr) => {
-                        onChange(prj_ldr.value);
-                      }}
-                    />
-                  )}
-                  name={"prj_ldr"}
-                  rules={{ required: "Please select a project lead." }}
+                  errors={errors}
+                  placeholder="Select project lead..."
                 />
-                {errors.prj_ldr && (
-                  <div className="invalid-feedback">
-                    {errors.prj_ldr.message}
-                  </div>
-                )}
               </div>
             </div>
 
@@ -189,66 +169,24 @@ const FN011 = (props) => {
               </div>
 
               <div className="col-3 mb-3">
-                <label htmlFor="select-lake" className="form-label">
-                  Lake
-                </label>
-
-                <select
-                  id="select-lake"
-                  {...register("lake")}
-                  aria-label="Select Lake"
-                  defaultValue=""
-                  className={
-                    errors.lake ? "form-control is-invalid" : "form-control"
-                  }
-                >
-                  <option value="">Select lake...</option>
-                  {lakes.map((lake) => {
-                    return (
-                      <option key={lake.value} value="{lake.value}">
-                        {lake.label}
-                      </option>
-                    );
-                  })}
-                </select>
-                {errors.lake && (
-                  <div className="invalid-feedback">{errors.lake.message}</div>
-                )}
+                <Select
+                  name="lake"
+                  label="Lake"
+                  register={register}
+                  options={lakes}
+                  errors={errors}
+                />
               </div>
 
               <div className="col-3 mb-3">
-                <label htmlFor="select-protocol" className="form-label">
-                  Protocol
-                </label>
-
-                <Controller
+                <ControlledSelect
+                  name="protocol"
+                  label="Protocol"
+                  options={protocols}
                   control={control}
-                  render={({ field: { onChange, value, name, ref } }) => (
-                    <Select
-                      id="select-protocol"
-                      inputRef={ref}
-                      className={
-                        errors.protocol ? "form-control is-invalid" : null
-                      }
-                      aria-label="Select Protocol"
-                      placeholder="Select protocol..."
-                      value={protocols.find((c) => c.value === value)}
-                      name={name}
-                      options={protocols}
-                      onChange={(item) => {
-                        onChange(item.value);
-                      }}
-                    />
-                  )}
-                  name={"protocol"}
-                  rules={{ required: "Please select a protocol" }}
+                  errors={errors}
+                  placeholder="Select protocol..."
                 />
-
-                {errors.protocol && (
-                  <div className="invalid-feedback">
-                    {errors.protocol.message}
-                  </div>
-                )}
               </div>
             </div>
 

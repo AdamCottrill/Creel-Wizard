@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let api;
+export let api;
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
   api = axios.create({
@@ -59,4 +59,9 @@ export const getLakes = async () => {
       extent: x.extent,
     };
   });
+};
+
+export const checkPrjCd = async (prj_cd) => {
+  const response = await api.get(`/fn011/${prj_cd.toLowerCase()}/`);
+  return response.status;
 };
