@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 
 import { updateAction } from "../actions";
 
-import {
-  FaPlus,
-  FaTrash,
-  FaArrowDown,
-  FaArrowUp,
-  FaArrowRight,
-  FaArrowLeft,
-} from "react-icons/fa";
+import { ButtonBar } from "../components/ButtonBar";
+import { FieldArrayButtons } from "../components/FieldArrayButtons";
 
 const FN028 = (props) => {
   const { state, actions } = useStateMachine({ updateAction });
@@ -215,74 +209,24 @@ const FN028 = (props) => {
                   </select>
                 </div>
 
-                <div className="col-2 mb-3 align-self-end">
-                  <div
-                    className="btn-group"
-                    role="group"
-                    aria-label="Move or delete modes"
-                  >
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={() => move(index, index - 1)}
-                      disabled={index === 0}
-                    >
-                      <FaArrowUp />
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={() => move(index, index + 1)}
-                      disabled={index === fields.length - 1}
-                    >
-                      <FaArrowDown />
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-outline-danger"
-                      onClick={() => remove(index)}
-                      disabled={fields.length === 1}
-                    >
-                      <FaTrash />
-                    </button>
-                  </div>
-                </div>
+                <FieldArrayButtons
+                  index={index}
+                  fields={fields}
+                  remove={remove}
+                  move={move}
+                />
               </div>
             );
           })}
 
           <hr />
 
-          <div className="row justify-content-between">
-            <div className="col-2">
-              <Link to="/gear">
-                <button type="button" className="btn btn-primary">
-                  <FaArrowLeft />
-                  Back
-                </button>
-              </Link>
-            </div>
-
-            <div className="col-2">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => {
-                  append(defaultValues[0]);
-                }}
-              >
-                <FaPlus />
-                Add Another Mode
-              </button>
-            </div>
-
-            <div className="col-2">
-              <button type="" className="btn btn-primary">
-                Create Project
-                <FaArrowRight />
-              </button>
-            </div>
-          </div>
+          <ButtonBar
+            append_values={defaultValues[0]}
+            button_label="Add Another Mode"
+            back_link="/gear"
+            append={append}
+          />
         </form>
       </div>
     </div>

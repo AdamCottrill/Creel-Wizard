@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
-import {
-  FaPlus,
-  FaTrash,
-  FaArrowUp,
-  FaArrowDown,
-  FaArrowRight,
-  FaArrowLeft,
-} from "react-icons/fa";
 
 import { updateAction } from "../actions";
+import { ButtonBar } from "../components/ButtonBar";
+import { FieldArrayButtons } from "../components/FieldArrayButtons";
 
 const FN026 = (props) => {
   const { state, actions } = useStateMachine({ updateAction });
@@ -164,84 +158,23 @@ const FN026 = (props) => {
                 />
               </div>
 
-              <div className="col-2 mb-3 align-self-end">
-                <div
-                  className="btn-group"
-                  role="group"
-                  aria-label="Move or delete spatial strata"
-                >
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary"
-                    onClick={() => move(index, index - 1)}
-                    disabled={index === 0}
-                  >
-                    <FaArrowUp />
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary"
-                    onClick={() => move(index, index + 1)}
-                    disabled={index === fields.length - 1}
-                  >
-                    <FaArrowDown />
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline-danger"
-                    onClick={() => remove(index)}
-                    disabled={fields.length === 1}
-                  >
-                    <FaTrash />
-                  </button>
-                </div>
-              </div>
+              <FieldArrayButtons
+                index={index}
+                fields={fields}
+                remove={remove}
+                move={move}
+              />
             </div>
           ))}
 
           <hr />
 
-          <div className="row justify-content-between">
-            <div className="col-2">
-              <Link to="/fn022">
-                <button type="button" className="btn btn-primary">
-                  <span className="px-1">
-                    <FaArrowLeft />
-                  </span>
-                  Back
-                </button>
-              </Link>
-            </div>
-
-            <div className="col-2">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => {
-                  append({
-                    space: "00",
-                    space_des: "Study Area",
-                    dd_lat: "",
-                    dd_lon: "",
-                  });
-                }}
-              >
-                <span className="px-1">
-                  <FaPlus />
-                </span>
-                Add Another Space
-              </button>
-            </div>
-
-            <div className="col-2">
-              <button type="submit" className="btn btn-primary">
-                Next
-                <span className="px-1">
-                  <FaArrowRight />
-                </span>
-              </button>
-            </div>
-          </div>
+          <ButtonBar
+            append_values={defaultValues[0]}
+            button_label="Add a Space"
+            back_link="/fn022"
+            append={append}
+          />
         </form>
       </div>
     </div>

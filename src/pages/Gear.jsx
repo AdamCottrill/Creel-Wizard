@@ -2,19 +2,12 @@ import React, { useState } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import Select from "react-select";
 import { useQuery } from "react-query";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 
-import {
-  FaPlus,
-  FaTrash,
-  FaArrowDown,
-  FaArrowUp,
-  FaArrowRight,
-  FaArrowLeft,
-} from "react-icons/fa";
-
 import { getGears } from "../services/api";
+import { ButtonBar } from "../components/ButtonBar";
+import { FieldArrayButtons } from "../components/FieldArrayButtons";
 
 import { updateAction } from "../actions";
 
@@ -28,14 +21,6 @@ const Gear = (props) => {
     error: gears_error,
     isLoading: gears_loading,
   } = useQuery("gears", getGears);
-
-  // const process_types = [
-  //   { id: 1, name: "whole net" },
-  //   { id: 2, name: "by panel by mesh" },
-  //   { id: 3, name: "by mesh" },
-  //   { id: 4, name: "by panel" },
-  //   { id: 5, name: "by panel groups" },
-  // ];
 
   const defaultValues = [
     {
@@ -192,38 +177,12 @@ const Gear = (props) => {
                     {/*   </div> */}
                     {/* </div> */}
 
-                    <div className="col-2 mb-3 align-self-end">
-                      <div
-                        className="btn-group"
-                        role="group"
-                        aria-label="Move or delete gear"
-                      >
-                        <button
-                          type="button"
-                          className="btn btn-outline-primary"
-                          onClick={() => move(index, index - 1)}
-                          disabled={index === 0}
-                        >
-                          <FaArrowUp />
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-outline-primary"
-                          onClick={() => move(index, index + 1)}
-                          disabled={index === fields.length - 1}
-                        >
-                          <FaArrowDown />
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-outline-danger"
-                          onClick={() => remove(index)}
-                          disabled={fields.length === 1}
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                    </div>
+                    <FieldArrayButtons
+                      index={index}
+                      fields={fields}
+                      remove={remove}
+                      move={move}
+                    />
                   </div>
                 </div>
               </div>
@@ -231,42 +190,12 @@ const Gear = (props) => {
           })}
           <hr />
 
-          <div className="row justify-content-between">
-            <div className="col-2">
-              <Link to="/fn026">
-                <button type="button" className="btn btn-primary">
-                  <span className="px-1">
-                    <FaArrowLeft />
-                  </span>
-                  Back
-                </button>
-              </Link>
-            </div>
-
-            <div className="col-2">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => {
-                  append(defaultValues[0]);
-                }}
-              >
-                <span className="px-1">
-                  <FaPlus />
-                </span>
-                Add Another Gear
-              </button>
-            </div>
-
-            <div className="col-2">
-              <button type="submit" className="btn btn-primary">
-                Next
-                <span className="px-1">
-                  <FaArrowRight />
-                </span>
-              </button>
-            </div>
-          </div>
+          <ButtonBar
+            append_values={defaultValues[0]}
+            button_label="Add Another Gear"
+            back_link="/fn026"
+            append={append}
+          />
         </form>
       </div>
     </div>
