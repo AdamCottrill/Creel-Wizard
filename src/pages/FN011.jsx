@@ -6,8 +6,12 @@ import { withRouter } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 import { FaArrowRight } from "react-icons/fa";
 
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import { getProjectLeads, getProtocols, getLakes } from "../services/api";
 
+import { FN011schema } from "../schemas/schemas";
+import { Input } from "../components/Input";
 import { updateFN011 } from "../actions";
 
 const FN011 = (props) => {
@@ -42,6 +46,7 @@ const FN011 = (props) => {
     formState: { errors },
   } = useForm({
     defaultValues: initialValues,
+    resolver: yupResolver(FN011schema),
   });
 
   const onSubmit = (data) => {
@@ -108,32 +113,24 @@ const FN011 = (props) => {
               </div>
             </div>
           )}
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="row">
               <div className="col-4 mb-3">
-                <label htmlFor="prj_cd" className="form-label">
-                  Project Code
-                </label>
-                <input
+                <Input
+                  name="prj_cd"
                   type="text"
-                  className="form-control"
-                  id="prj_cd"
-                  {...register("prj_cd")}
-                  required
+                  label="Project Code"
+                  register={register}
+                  errors={errors}
                 />
               </div>
-
               <div className="col-4 mb-3">
-                <label htmlFor="prj_nm" className="form-label">
-                  Project Name
-                </label>
-                <input
+                <Input
+                  name="prj_nm"
+                  label="Project Name"
                   type="text"
-                  className="form-control"
-                  id="prj_nm"
-                  {...register("prj_nm")}
-                  //defaultValue={state.prj_nm}
-                  required
+                  register={register}
+                  errors={errors}
                 />
               </div>
 
@@ -164,7 +161,7 @@ const FN011 = (props) => {
                 />
                 {errors.prj_ldr && (
                   <div className="invalid-feedback">
-                    {errors.prj_cd.message}
+                    {errors.prj_ldr.message}
                   </div>
                 )}
               </div>
@@ -172,28 +169,22 @@ const FN011 = (props) => {
 
             <div className="row">
               <div className="col-3 mb-3">
-                <label htmlFor="prj_date0" className="form-label">
-                  Start Date
-                </label>
-                <input
+                <Input
+                  name="prj_date0"
+                  label="Start Date"
                   type="date"
-                  className="form-control"
-                  id="prj_date0"
-                  {...register("prj_date0")}
-                  required
+                  register={register}
+                  errors={errors}
                 />
               </div>
 
               <div className="col-3 mb-3">
-                <label htmlFor="prj_date1" className="form-label">
-                  End Date
-                </label>
-                <input
+                <Input
+                  name="prj_date1"
+                  label="End Date"
                   type="date"
-                  className="form-control"
-                  id="prj_date1"
-                  {...register("prj_date1")}
-                  required
+                  register={register}
+                  errors={errors}
                 />
               </div>
 
@@ -205,10 +196,11 @@ const FN011 = (props) => {
                 <select
                   id="select-lake"
                   {...register("lake")}
-                  className="form-select"
                   aria-label="Select Lake"
                   defaultValue=""
-                  required
+                  className={
+                    errors.lake ? "form-control is-invalid" : "form-control"
+                  }
                 >
                   <option value="">Select lake...</option>
                   {lakes.map((lake) => {
@@ -219,6 +211,9 @@ const FN011 = (props) => {
                     );
                   })}
                 </select>
+                {errors.lake && (
+                  <div className="invalid-feedback">{errors.lake.message}</div>
+                )}
               </div>
 
               <div className="col-3 mb-3">
@@ -264,12 +259,19 @@ const FN011 = (props) => {
               <textarea
                 style={{ height: "200px" }}
                 type="text"
-                className="form-control"
+                className={
+                  errors.comment0 ? "form-control is-invalid" : "form-control"
+                }
                 id="comment0"
                 {...register("comment0")}
                 //defaultValue={state.comment0}
-                required
+                //required
               />
+              {errors.comment0 && (
+                <div className="invalid-feedback">
+                  {errors.comment0.message}
+                </div>
+              )}
             </div>
 
             <div className="mb-3">
