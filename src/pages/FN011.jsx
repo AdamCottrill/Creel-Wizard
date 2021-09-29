@@ -13,6 +13,7 @@ import { getProjectLeads, getProtocols, getLakes } from "../services/api";
 import { FN011schema } from "../schemas/schemas";
 import { Input, Select, ControlledSelect } from "../components/FormControls";
 import { updateFN011 } from "../actions";
+import { prepDate } from "../utils";
 
 const FN011 = (props) => {
   const { actions, state } = useStateMachine({ updateFN011 });
@@ -38,6 +39,9 @@ const FN011 = (props) => {
   } = useQuery("lakes", getLakes);
 
   const initialValues = state.fn011 || {};
+
+  initialValues.prj_date0 = prepDate(initialValues.prj_date0);
+  initialValues.prj_date1 = prepDate(initialValues.prj_date1);
 
   const {
     register,

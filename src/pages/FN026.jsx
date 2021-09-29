@@ -6,6 +6,7 @@ import { useStateMachine } from "little-state-machine";
 import { updateAction } from "../actions";
 import { ButtonBar } from "../components/ButtonBar";
 import { FieldArrayButtons } from "../components/FieldArrayButtons";
+import { Input } from "../components/FormControls";
 
 const FN026 = (props) => {
   const { state, actions } = useStateMachine({ updateAction });
@@ -23,7 +24,12 @@ const FN026 = (props) => {
 
   const initialValues = state.fn026 || defaultValues;
 
-  const { register, handleSubmit, control } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     defaultValues: { fn026: initialValues },
   });
 
@@ -103,58 +109,42 @@ const FN026 = (props) => {
           {fields.map((item, index) => (
             <div className="row" key={item.id}>
               <div className="col-1 mb-3">
-                <label htmlFor={`space-${index}`} className="form-label">
-                  Space
-                </label>
-                <input
+                <Input
+                  name={`fn026.${index}.space`}
+                  label="Space"
                   type="text"
-                  className="form-control"
-                  id={`space-${index}`}
-                  {...register(`fn026.${index}.space`)}
-                  //defaultValue={state.space || "00"}
-                  required
+                  register={register}
+                  errors={errors}
                 />
               </div>
 
               <div className="col-5 mb-3">
-                <label htmlFor={`space-des-${index}`} className="form-label">
-                  Space Description
-                </label>
-                <input
+                <Input
+                  name={`fn026.${index}.space_des`}
+                  label="Space Description"
                   type="text"
-                  className="form-control"
-                  id={`space-des-${index}`}
-                  {...register(`fn026.${index}.space_des`)}
-                  //defaultValue={state.space_des || "Default Space"}
-                  required
+                  register={register}
+                  errors={errors}
                 />
               </div>
 
               <div className="col-2 mb-3">
-                <label htmlFor={`dd-lat-${index}`} className="form-label">
-                  Latitude
-                </label>
-                <input
+                <Input
+                  name={`fn026.${index}.dd_lat`}
+                  label="Latitude"
                   type="text"
-                  className="form-control"
-                  id={`dd-lat-${index}`}
-                  {...register(`fn026.${index}.dd_lat`)}
-                  //defaultValue={state.dd_lat}
-                  required
+                  register={register}
+                  errors={errors}
                 />
               </div>
 
               <div className="col-2 mb-3">
-                <label htmlFor={`dd-lon-${index}`} className="form-label">
-                  Longitude
-                </label>
-                <input
+                <Input
+                  name={`fn026.${index}.dd_lon`}
+                  label="Longitude"
                   type="text"
-                  className="form-control"
-                  id={`dd-lon-${index}`}
-                  {...register(`fn026.${index}.dd_lon`)}
-                  //defaultValue={state.dd_lon}
-                  required
+                  register={register}
+                  errors={errors}
                 />
               </div>
 

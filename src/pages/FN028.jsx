@@ -4,9 +4,9 @@ import { withRouter } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 
 import { updateAction } from "../actions";
-
 import { ButtonBar } from "../components/ButtonBar";
 import { FieldArrayButtons } from "../components/FieldArrayButtons";
+import { Input, Select } from "../components/FormControls";
 
 const FN028 = (props) => {
   const { state, actions } = useStateMachine({ updateAction });
@@ -25,7 +25,12 @@ const FN028 = (props) => {
 
   const initialValues = state.fn028 || defaultValues;
 
-  const { register, handleSubmit, control } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     defaultValues: { fn028: initialValues },
   });
 
@@ -33,6 +38,25 @@ const FN028 = (props) => {
     control,
     name: "fn028",
   });
+
+  const orient_options = [
+    //{ value: "", label: "Select orient..." },
+    { value: "1", label: "1 - Across Contours" },
+    { value: "2", label: "2 - With Contours" },
+    { value: "9", label: "9 - No Reported" },
+    { value: "u", label: "U - Upstream" },
+    { value: "d", label: "D - Downstream " },
+  ];
+
+  const settype_options = [
+    { value: "", label: "Select set type..." },
+    { value: "b", label: "B - Bottom" },
+    { value: "c", label: "C - Canned" },
+    { value: "k", label: "K - Kited" },
+    { value: "s", label: "S - Stepped" },
+    { value: "t", label: "T - Thermocline" },
+    { value: "9", label: "9 - Not Reported" },
+  ];
 
   const onSubmit = (data) => {
     actions.updateAction(data);
@@ -102,30 +126,22 @@ const FN028 = (props) => {
             return (
               <div className="row" key={index}>
                 <div className="col-1 mb-3">
-                  <label htmlFor={`mode-${index}`} className="form-label">
-                    Mode
-                  </label>
-                  <input
+                  <Input
+                    name={`fn028.${index}.mode`}
+                    label="Mode"
                     type="text"
-                    className="form-control"
-                    id={`mode-${index}`}
-                    {...register(`fn028.${index}.mode`)}
-                    defaultValue="00"
-                    required
+                    register={register}
+                    errors={errors}
                   />
                 </div>
 
                 <div className="col-3 mb-3">
-                  <label htmlFor={`mode-des-${index}`} className="form-label">
-                    Mode Description
-                  </label>
-                  <input
+                  <Input
+                    name={`fn028.${index}.mode_des`}
+                    label="Mode Description"
                     type="text"
-                    className="form-control"
-                    id={`mode-des-${index}`}
-                    {...register(`fn028.${index}.mode_des`)}
-                    defaultValue={state.mode_des || "Default Mode"}
-                    required
+                    register={register}
+                    errors={errors}
                   />
                 </div>
 
@@ -160,53 +176,27 @@ const FN028 = (props) => {
                 </div>
 
                 <div className="col-2 mb-3">
-                  <label
-                    htmlFor={`select-orient-${index}`}
-                    className="form-label"
-                  >
-                    Orient
-                  </label>
-
-                  <select
-                    id={`select-orient-${index}`}
-                    {...register(`fn028.${index}.orient`)}
-                    className="form-select"
-                    aria-label="Select Orient"
-                    required
+                  <Select
+                    name={`fn028.${index}.orient`}
+                    label="Orient"
                     defaultValue=""
-                  >
-                    <option value="">Select orient...</option>
-                    <option value="1">1 - Across Contours</option>
-                    <option value="2">2 - With Contours</option>
-                    <option value="9">9 - No Reported</option>
-                    <option value="u">U - Upstream</option>
-                    <option value="d">D - Downstream </option>
-                  </select>
+                    placeholder="Select orient..."
+                    register={register}
+                    options={orient_options}
+                    errors={errors}
+                  />
                 </div>
 
                 <div className="col-2 mb-3">
-                  <label
-                    htmlFor={`select-set-type-${index}`}
-                    className="form-label"
-                  >
-                    Set Type
-                  </label>
-
-                  <select
-                    id={`select-set-type-${index}`}
-                    {...register(`fn028.${index}.set_type`)}
-                    className="form-select"
-                    aria-label="Select Set Type"
-                    required
-                  >
-                    <option value="">Select set type...</option>
-                    <option value="b">B - Bottom</option>
-                    <option value="c">C - Canned</option>
-                    <option value="k">K - Kited</option>
-                    <option value="s">S - Stepped</option>
-                    <option value="t">T - Thermocline</option>
-                    <option value="9">9 - Not Reported</option>
-                  </select>
+                  <Select
+                    name={`fn028.${index}.set_type`}
+                    label="Set Type"
+                    defaultValue=""
+                    placeholder="Select Set Type..."
+                    register={register}
+                    options={settype_options}
+                    errors={errors}
+                  />
                 </div>
 
                 <FieldArrayButtons

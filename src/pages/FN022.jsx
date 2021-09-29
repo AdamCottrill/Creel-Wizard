@@ -7,6 +7,8 @@ import { useStateMachine } from "little-state-machine";
 import { updateAction } from "../actions";
 import { ButtonBar } from "../components/ButtonBar";
 import { FieldArrayButtons } from "../components/FieldArrayButtons";
+import { Input } from "../components/FormControls";
+import { prepDate } from "../utils";
 
 const FN022 = (props) => {
   const { state, actions } = useStateMachine({ updateAction });
@@ -24,11 +26,16 @@ const FN022 = (props) => {
 
   const initialValues = state.fn022 || defaultValues;
 
+  initialValues.forEach((x, i) => {
+    initialValues[i].ssn_date0 = prepDate(initialValues[i].ssn_date0);
+    initialValues[i].ssn_date1 = prepDate(initialValues[i].ssn_date1);
+  });
+
   const {
     register,
     control,
     handleSubmit,
-    //formState: { errors },
+    formState: { errors },
   } = useForm({ defaultValues: { fn022: initialValues } });
 
   const { fields, append, remove, move } = useFieldArray({
@@ -90,61 +97,54 @@ const FN022 = (props) => {
             return (
               <div className="row" key={item.id}>
                 <div className="col-1 mb-3">
-                  <label htmlFor={`ssn-${index}`} className="form-label">
-                    Season
-                  </label>
-                  <input
+                  <Input
+                    name={`fn022.${index}.ssn`}
+                    label="Season"
                     type="text"
-                    className="form-control"
-                    id={`ssn-${index}`}
-                    {...register(`fn022.${index}.ssn`)}
-                    defaultValue={initialValues[`fn022.${index}.ssn`] || "00"}
-                    required
+                    register={register}
+                    errors={errors}
                   />
                 </div>
 
                 <div className="col-3 mb-3">
-                  <label htmlFor={`ssn-des-${index}`} className="form-label">
-                    Season Description
-                  </label>
-                  <input
+                  <Input
+                    name={`fn022.${index}.ssn_des`}
+                    label="Season Description"
                     type="text"
-                    className="form-control"
-                    id={`ssn-des-${index}`}
-                    {...register(`fn022.${index}.ssn_des`)}
+                    register={register}
+                    errors={errors}
+                  />
+                </div>
+
+                <div className="col-3 mb-3">
+                  <Input
+                    name={`fn022.${index}.ssn_date0`}
+                    label="Start Date"
+                    type="date"
+                    register={register}
+                    errors={errors}
                     defaultValue={
-                      initialValues[`fn022.${index}.ssn_des`] ||
-                      "Default Season"
+                      initialValues[
+                        `fn022.${index}.ssn_date0` || defaultValues[0].ssn_date0
+                      ]
                     }
-                    required
                   />
                 </div>
 
                 <div className="col-3 mb-3">
-                  <label htmlFor={`ssn_date0-${index}`} className="form-label">
-                    Start Date
-                  </label>
-                  <input
+                  <Input
+                    name={`fn022.${index}.ssn_date1`}
+                    label="End Date"
                     type="date"
-                    className="form-control"
-                    id={`ssn_date0-${index}`}
-                    {...register(`fn022.${index}.ssn_date0`)}
-                    defaultValue={initialValues[`fn022.${index}.ssn_date0`]}
-                    required
-                  />
-                </div>
-
-                <div className="col-3 mb-3">
-                  <label htmlFor={`ssn_date1-${index}`} className="form-label">
-                    End Date
-                  </label>
-                  <input
-                    type="date"
-                    className="form-control"
-                    id={`ssn_date1-${index}`}
-                    {...register(`fn022.${index}.ssn_date1`)}
-                    defaultValue={initialValues[`fn022.${index}.ssn_date1`]}
-                    required
+                    register={register}
+                    errors={errors}
+                    defaultValue={
+                      (initialValues[{ index }] &&
+                        initialValues[{ index }].ssn_date1
+                          .toISOString()
+                          .split("T")[0]) ||
+                      defaultValues[0].ssn_date1
+                    }
                   />
                 </div>
 

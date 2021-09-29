@@ -2,7 +2,7 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import ReactSelect from "react-select";
 
-export const Input = ({ name, label, type, register, errors }) => {
+export const Input = ({ name, label, type, register, errors, ...rest }) => {
   return (
     <>
       <label htmlFor="{name}" className="form-label">
@@ -17,6 +17,7 @@ export const Input = ({ name, label, type, register, errors }) => {
         }
         id={name}
         {...register(name)}
+        {...rest}
       />
       {errors && errors[name] && (
         <div className="invalid-feedback">{errors[name].message}</div>
@@ -25,9 +26,16 @@ export const Input = ({ name, label, type, register, errors }) => {
   );
 };
 
-export const Select = ({ name, label, options, register, errors }) => {
+export const Select = ({
+  name,
+  label,
+  options,
+  register,
+  errors,
+  placeholder,
+}) => {
   const id = `select-${name}`;
-  const placeholder = `Select ${name} ...`;
+  const _placeholder = placeholder ? placeholder : `Select ${name} ...`;
   return (
     <>
       <label htmlFor="{id}" className="form-label">
@@ -42,7 +50,7 @@ export const Select = ({ name, label, options, register, errors }) => {
           errors && errors[name] ? "form-control is-invalid" : "form-control"
         }
       >
-        <option value=""> {placeholder} </option>
+        <option value=""> {_placeholder} </option>
         {options.map((item) => {
           return (
             <option key={item.value} value={item.value}>
