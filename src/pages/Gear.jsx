@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
-import Select from "react-select";
+import { useForm, useFieldArray } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import { useQuery } from "react-query";
 import { withRouter } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 
+import schema from "../schemas/Gear";
 import { getGears } from "../services/api";
+import { ControlledSelect } from "../components/FormControls";
 import { ButtonBar } from "../components/ButtonBar";
 import { FieldArrayButtons } from "../components/FieldArrayButtons";
 
@@ -17,7 +20,7 @@ const Gear = (props) => {
   const [showRules, setShowRules] = useState(false);
 
   const {
-    data: gears,
+    data: gear_options,
     error: gears_error,
     isLoading: gears_loading,
   } = useQuery("gears", getGears);
@@ -37,6 +40,8 @@ const Gear = (props) => {
     formState: { errors },
   } = useForm({
     defaultValues: { gear_array: initialValues },
+    resolver: yupResolver(schema),
+    mode: "onBlur",
   });
 
   const { fields, append, remove, move } = useFieldArray({
@@ -48,9 +53,10 @@ const Gear = (props) => {
 
   if (gears_error) return "An error has occurred: " + gears_error.message;
 
-  if (gears) console.log("gears = ", gears);
-
   const onSubmit = (data) => {
+    console.log("data = ", data);
+    console.log("errors = ", errors);
+
     actions.updateAction(data);
     props.history.push("./fn028");
   };
@@ -93,53 +99,35 @@ const Gear = (props) => {
 
         <hr />
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
           {fields.map((field, index) => {
             return (
               <div className="card mb-2" key={field.id}>
                 <div className="card-body">
                   <div className="row">
                     <div className="col-3 mb-3">
-                      <Controller
-                        key={field.id}
-                        name={`gear_array.${index}.gear_code`}
-                        isClearable
+                      <ControlledSelect
+                        name={`gear_array.${index}.gear`}
+                        label="Gear"
+                        options={gear_options}
                         control={control}
-                        render={({ field }) => (
-                          <Select {...field} options={gears} />
-                        )}
+                        errors={errors}
+                        placeholder="Select gear..."
+                        index={index}
                       />
-
-                      {/* <Controller */}
-                      {/*   control={control} */}
-                      {/*   defaultValue="" */}
-                      {/*   name={`select-gear-${index}`} */}
-                      {/*   render={({ field: { onChange, value, name, ref } }) => { */}
-                      {/*     //debugger; */}
-                      {/*     return ( */}
-                      {/*       <Select */}
-                      {/*         id={`select-gear-${index}`} */}
-                      {/*         //{...register(`gr.${index}.gear_code`)} */}
-                      {/*         inputRef={ref} */}
-                      {/*         aria-label="Select Gear" */}
-                      {/*         placeholder="Select gear..." */}
-                      {/*         value={gears.find((c) => c.value === value)} */}
-                      {/*         name={name} */}
-                      {/*         options={gears} */}
-                      {/*         defaultValue={defaultValues.gear_code} */}
-                      {/*         onChange={(field) => { */}
-                      {/*           onChange(field.value); */}
-                      {/*         }} */}
-                      {/*       /> */}
-                      {/*     ); */}
-                      {/*   }} */}
-                      {/* /> */}
-
-                      {errors.gear && (
-                        <div className="invalid-feedback">
-                          Please select a gear.
-                        </div>
-                      )}
+                      {/*   <Controller */}
+                      {/*     key={field.id} */}
+                      {/*     name={`gear_array.${index}.gear_code`} */}
+                      {/*     control={control} */}
+                      {/*     render={({ field }) => ( */}
+                      {/*       <Select {...field} options={gears} /> */}
+                      {/*     )} */}
+                      {/*   /> */}
+                      {/*   {errors.gear && ( */}
+                      {/*     <div className="invalid-feedback"> */}
+                      {/*       Please select a gear. */}
+                      {/*     </div> */}
+                      {/*   )} */}
                     </div>
 
                     {/* <div className="col-7 mb-3"> */}
