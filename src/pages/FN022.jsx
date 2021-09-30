@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 
 import { useForm, useFieldArray } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { withRouter } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 
+import schema from "../schemas/FN022";
 import { updateAction } from "../actions";
 import { ButtonBar } from "../components/ButtonBar";
 import { FieldArrayButtons } from "../components/FieldArrayButtons";
 import { Input } from "../components/FormControls";
-import { prepDate } from "../utils";
+import { prepDate, getDate } from "../utils";
 
 const FN022 = (props) => {
   const { state, actions } = useStateMachine({ updateAction });
@@ -31,12 +33,21 @@ const FN022 = (props) => {
     initialValues[i].ssn_date1 = prepDate(initialValues[i].ssn_date1);
   });
 
+  const yupcontext = {
+    prj_date0: state.fn011.prj_date0,
+    prj_date1: state.fn011.prj_date1,
+  };
+
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({ defaultValues: { fn022: initialValues } });
+  } = useForm({
+    defaultValues: { fn022: initialValues },
+    resolver: yupResolver(schema, yupcontext),
+    mode: "onChange",
+  });
 
   const { fields, append, remove, move } = useFieldArray({
     control,
@@ -44,9 +55,14 @@ const FN022 = (props) => {
   });
 
   const onSubmit = (data) => {
+    console.log(data);
+    console.log("errors = ", errors);
     actions.updateAction(data);
     props.history.push("./fn026");
   };
+
+  const prj_date0 = getDate(state.fn011.prj_date0);
+  const prj_date1 = getDate(state.fn011.prj_date1);
 
   return (
     <div className="card">
@@ -80,8 +96,9 @@ const FN022 = (props) => {
                 <li>season code must be unique within a project</li>
                 <li>season descriptions must be unique within a project</li>
                 <li>
-                  season dates must be contained within the projet start and end
-                  dates
+                  season dates must be contained within the project start (
+                  {prj_date0.toLocaleDateString()})) and end dates (
+                  {prj_date1.toLocaleDateString()})
                 </li>
                 <li>season dates cannot overlap</li>
                 <li>every sample must belong to one, and only one season</li>
@@ -92,7 +109,7 @@ const FN022 = (props) => {
 
         <hr />
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
           {fields.map((item, index) => {
             return (
               <div className="row" key={item.id}>
@@ -103,6 +120,7 @@ const FN022 = (props) => {
                     type="text"
                     register={register}
                     errors={errors}
+                    index={index}
                   />
                 </div>
 
@@ -113,6 +131,7 @@ const FN022 = (props) => {
                     type="text"
                     register={register}
                     errors={errors}
+                    index={index}
                   />
                 </div>
 
@@ -128,6 +147,7 @@ const FN022 = (props) => {
                         `fn022.${index}.ssn_date0` || defaultValues[0].ssn_date0
                       ]
                     }
+                    index={index}
                   />
                 </div>
 
@@ -139,12 +159,9 @@ const FN022 = (props) => {
                     register={register}
                     errors={errors}
                     defaultValue={
-                      (initialValues[{ index }] &&
-                        initialValues[{ index }].ssn_date1
-                          .toISOString()
-                          .split("T")[0]) ||
-                      defaultValues[0].ssn_date1
+                      `fn022.${index}.ssn_date1` || defaultValues[0].ssn_date1
                     }
+                    index={index}
                   />
                 </div>
 

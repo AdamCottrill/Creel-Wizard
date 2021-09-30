@@ -10,7 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { getProjectLeads, getProtocols, getLakes } from "../services/api";
 
-import { FN011schema } from "../schemas/schemas";
+import schema from "../schemas/FN011";
 import { Input, Select, ControlledSelect } from "../components/FormControls";
 import { updateFN011 } from "../actions";
 import { prepDate } from "../utils";
@@ -50,7 +50,7 @@ const FN011 = (props) => {
     formState: { errors },
   } = useForm({
     defaultValues: initialValues,
-    resolver: yupResolver(FN011schema),
+    resolver: yupResolver(schema),
     mode: "onBlur",
   });
 

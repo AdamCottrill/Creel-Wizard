@@ -1,5 +1,4 @@
 import { api } from "../services/api";
-
 import * as yup from "yup";
 
 const PRJ_CD_REGEX = /^[A-Z0-9]{3}_[A-Z]{2}\d{2}_([A-Z]|\d){3}$/;
@@ -12,26 +11,7 @@ const LAKE_PREFIX_MAP = {
   SC: ["LEA", "LEM"],
 };
 
-// const isDate = value => {
-//     return Object.prototype.toString.call(value) === '[object Date]'
-// }
-
-// const parseDate(value, original) {
-//   const parsedDate = isDate(original)
-//     ? original
-//     : new Date(value));
-
-//   return parsedDate;
-// }
-
-// prj_cd must be consistent with lake - DONE
-// project must exist
-// prj_cd must be consistent with start date - DONE
-// prj_cd must be consistent with end date - DONE
-
-// year must be > 1950 and less than today plus one year.
-
-export const FN011schema = yup.object().shape({
+const FN011schema = yup.object().shape({
   prj_cd: yup
     .string()
     .required("Project Code is required")
@@ -116,3 +96,5 @@ export const FN011schema = yup.object().shape({
   protocol: yup.string().required(),
   comment0: yup.string().required("A Project Description is required."),
 });
+
+export default FN011schema;
