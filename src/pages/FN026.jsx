@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { withRouter } from "react-router-dom";
 import { useStateMachine } from "little-state-machine";
 
+import schema from "../schemas/FN026";
 import { updateAction } from "../actions";
 import { ButtonBar } from "../components/ButtonBar";
 import { FieldArrayButtons } from "../components/FieldArrayButtons";
@@ -24,6 +26,10 @@ const FN026 = (props) => {
 
   const initialValues = state.fn026 || defaultValues;
 
+  // yup context will need to get the extent for the selected lake to put bounds on lat-lon.
+
+  const { bbox } = state;
+
   const {
     register,
     handleSubmit,
@@ -31,6 +37,8 @@ const FN026 = (props) => {
     formState: { errors },
   } = useForm({
     defaultValues: { fn026: initialValues },
+    resolver: yupResolver(schema, bbox),
+    mode: "onBlur",
   });
 
   const { fields, append, remove, move } = useFieldArray({
@@ -105,7 +113,7 @@ const FN026 = (props) => {
 
         <hr />
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
           {fields.map((item, index) => (
             <div className="row" key={item.id}>
               <div className="col-1 mb-3">
@@ -115,6 +123,7 @@ const FN026 = (props) => {
                   type="text"
                   register={register}
                   errors={errors}
+                  index={index}
                 />
               </div>
 
@@ -125,6 +134,7 @@ const FN026 = (props) => {
                   type="text"
                   register={register}
                   errors={errors}
+                  index={index}
                 />
               </div>
 
@@ -135,6 +145,7 @@ const FN026 = (props) => {
                   type="text"
                   register={register}
                   errors={errors}
+                  index={index}
                 />
               </div>
 
@@ -145,6 +156,7 @@ const FN026 = (props) => {
                   type="text"
                   register={register}
                   errors={errors}
+                  index={index}
                 />
               </div>
 

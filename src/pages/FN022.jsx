@@ -46,7 +46,7 @@ const FN022 = (props) => {
   } = useForm({
     defaultValues: { fn022: initialValues },
     resolver: yupResolver(schema, yupcontext),
-    mode: "onChange",
+    mode: "onBlur",
   });
 
   const { fields, append, remove, move } = useFieldArray({
@@ -55,8 +55,6 @@ const FN022 = (props) => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
-    console.log("errors = ", errors);
     actions.updateAction(data);
     props.history.push("./fn026");
   };

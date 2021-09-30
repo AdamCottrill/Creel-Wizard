@@ -12,11 +12,11 @@ import { getProjectLeads, getProtocols, getLakes } from "../services/api";
 
 import schema from "../schemas/FN011";
 import { Input, Select, ControlledSelect } from "../components/FormControls";
-import { updateFN011 } from "../actions";
+import { updateAction } from "../actions";
 import { prepDate } from "../utils";
 
 const FN011 = (props) => {
-  const { actions, state } = useStateMachine({ updateFN011 });
+  const { actions, state } = useStateMachine({ updateAction });
 
   const [showRules, setShowRules] = useState(false);
 
@@ -55,7 +55,16 @@ const FN011 = (props) => {
   });
 
   const onSubmit = (data) => {
-    actions.updateFN011(data);
+    actions.updateAction(data);
+    // add the extent of the selected lake to the state so we can use it
+    // to validate coordinates of each space.
+    const extent = lakes.filter((x) => x.value === data.lake)[0].extent;
+    const keys = ["minLon", "minLat", "maxLon", "maxLat"];
+    let bbox = {};
+    keys.forEach((key, i) => (bbox[key] = extent[i]));
+
+    actions.updateAction({ bbox });
+
     props.history.push("./fn022");
   };
 
