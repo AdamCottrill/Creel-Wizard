@@ -53,8 +53,12 @@ const FN022schema = yup.object().shape({
             "Season start date occurs before Project start date",
             (value, context) => {
               const prj_date0 = new Date(context.options.prj_date0);
-              prj_date0.setHours(0, 0, 0, 0);
-              return value >= prj_date0;
+              prj_date0.setTime(
+                prj_date0.getTime() + prj_date0.getTimezoneOffset() * 60 * 1000
+              );
+              return (
+                value.setHours(0, 0, 0, 0) >= prj_date0.setHours(0, 0, 0, 0)
+              );
             }
           ),
         ssn_date1: yup
@@ -71,8 +75,12 @@ const FN022schema = yup.object().shape({
             "Season end date occurs after Project end date",
             (value, context) => {
               const prj_date1 = new Date(context.options.prj_date1);
-              prj_date1.setHours(0, 0, 0, 0);
-              return value <= prj_date1;
+              prj_date1.setTime(
+                prj_date1.getTime() + prj_date1.getTimezoneOffset() * 60 * 1000
+              );
+              return (
+                value.setHours(0, 0, 0, 0) <= prj_date1.setHours(0, 0, 0, 0)
+              );
             }
           ),
       })

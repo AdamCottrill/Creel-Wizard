@@ -27,7 +27,8 @@ const Gear = (props) => {
 
   const defaultValues = [
     {
-      gear_code: { value: "", label: "Select a gear..." },
+      gear: "",
+      //process_types: []
     },
   ];
 
@@ -54,9 +55,6 @@ const Gear = (props) => {
   if (gears_error) return "An error has occurred: " + gears_error.message;
 
   const onSubmit = (data) => {
-    console.log("data = ", data);
-    console.log("errors = ", errors);
-
     actions.updateAction(data);
     props.history.push("./fn028");
   };

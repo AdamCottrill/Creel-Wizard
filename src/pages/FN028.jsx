@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { withRouter } from "react-router-dom";
+import { useQuery } from "react-query";
 import { useStateMachine } from "little-state-machine";
+
+import { getGears } from "../services/api";
 
 import { updateAction } from "../actions";
 import { ButtonBar } from "../components/ButtonBar";
@@ -13,17 +16,51 @@ const FN028 = (props) => {
 
   const [showRules, setShowRules] = useState(false);
 
-  const defaultValues = [
-    {
-      mode: "00",
-      mode_des: "Default Mode",
-      gear: "",
-      orient: "",
-      set_type: "",
-    },
+  const orient_options = [
+    //{ value: "", label: "Select orient..." },
+    { value: "1", label: "Across Contours (1)" },
+    { value: "2", label: "With Contours (2)" },
+    { value: "9", label: "No Reported (9)" },
+    { value: "u", label: "Upstream (U)" },
+    { value: "d", label: "Downstream (d)" },
   ];
 
-  const initialValues = state.fn028 || defaultValues;
+  const settype_options = [
+    { value: "", label: "Select set type..." },
+    { value: "b", label: "On Bottom (B)" },
+    { value: "c", label: "Canned (C)" },
+    { value: "k", label: "Kited (K)" },
+    { value: "s", label: "Stepped (S)" },
+    { value: "t", label: "Thermocline (T)" },
+    { value: "9", label: "Not Reported (9)" },
+  ];
+
+  const {
+    data: gear_options,
+    error: gears_error,
+    isLoading: gears_loading,
+  } = useQuery("gears", getGears);
+
+  const gears_in_state = state.gear_array.map((x) => x.gear);
+
+  // by default we are going to create one record for each gear
+  const defaultValues = gears_in_state.map((gr, i) => {
+    const orient_val = "1";
+    const orient = orient_options.filter((x) => x.value === orient_val)[0];
+    const settype_val = "b";
+    const settype = settype_options.filter((x) => x.value === settype_val)[0];
+
+    return {
+      mode: `${i}0`,
+      mode_des: `${gr}-${orient.label}-${settype.label}`,
+      gear: gr,
+      orient: orient.value,
+      set_type: settype.value,
+    };
+  });
+
+  //const initialValues = state.fn028 || defaultValues;
+  const initialValues = defaultValues;
 
   const {
     register,
@@ -39,26 +76,13 @@ const FN028 = (props) => {
     name: "fn028",
   });
 
-  const orient_options = [
-    //{ value: "", label: "Select orient..." },
-    { value: "1", label: "1 - Across Contours" },
-    { value: "2", label: "2 - With Contours" },
-    { value: "9", label: "9 - No Reported" },
-    { value: "u", label: "U - Upstream" },
-    { value: "d", label: "D - Downstream " },
-  ];
+  if (gears_loading) return "Loading...";
 
-  const settype_options = [
-    { value: "", label: "Select set type..." },
-    { value: "b", label: "B - Bottom" },
-    { value: "c", label: "C - Canned" },
-    { value: "k", label: "K - Kited" },
-    { value: "s", label: "S - Stepped" },
-    { value: "t", label: "T - Thermocline" },
-    { value: "9", label: "9 - Not Reported" },
-  ];
+  if (gears_error) return "An error has occurred: " + gears_error.message;
 
   const onSubmit = (data) => {
+    console.log("data = ", data);
+    console.log("errors = ", errors);
     actions.updateAction(data);
     props.history.push("./result");
   };
@@ -124,7 +148,7 @@ const FN028 = (props) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           {fields.map((item, index) => {
             return (
-              <div className="row" key={index}>
+              <div className="row" key={item.is}>
                 <div className="col-1 mb-3">
                   <Input
                     name={`fn028.${index}.mode`}
@@ -132,6 +156,7 @@ const FN028 = (props) => {
                     type="text"
                     register={register}
                     errors={errors}
+                    index={index}
                   />
                 </div>
 
@@ -142,37 +167,21 @@ const FN028 = (props) => {
                     type="text"
                     register={register}
                     errors={errors}
+                    index={index}
                   />
                 </div>
 
                 <div className="col-2 mb-3">
-                  <label
-                    htmlFor={`select-gear-${index}`}
-                    className="form-label"
-                  >
-                    Gear
-                  </label>
-
-                  <select
-                    id={`select-gear-${index}`}
-                    {...register(`fn028.${index}.gear`)}
-                    className="form-select"
-                    aria-label="Select Gear"
-                    required
-                    defaultValue=""
-                  >
-                    <option value="">Select gear...</option>
-                    <option value="gl21">
-                      GL21 - Huron Offshore Index Gillnet
-                    </option>
-                    <option value="gl50">GL50 - FWIN Gillnet</option>
-                    <option value="na1">NA1 - BSM Large Mesh Gillnet</option>
-                    <option value="on2">ON2 - BSM Small Mesh Gillnet</option>
-                    <option value="tp08">TP08 - 8' NCSIN Trapnet </option>
-                    <option value="gl38">GL38 - 38 mm SLIN/FLIN Gillnet</option>
-                    <option value="gl51">GL51 - 51 mm SLIN/FLIN Gillnet</option>
-                    <option value="gl64">GL64 - 64 mm SLIN/FLIN Gillnet</option>
-                  </select>
+                  <Select
+                    name={`fn028.${index}.gear`}
+                    label="Gear"
+                    register={register}
+                    options={gear_options.filter((x) =>
+                      gears_in_state.includes(x.value)
+                    )}
+                    errors={errors}
+                    index={index}
+                  />
                 </div>
 
                 <div className="col-2 mb-3">
@@ -184,6 +193,7 @@ const FN028 = (props) => {
                     register={register}
                     options={orient_options}
                     errors={errors}
+                    index={index}
                   />
                 </div>
 
@@ -196,6 +206,7 @@ const FN028 = (props) => {
                     register={register}
                     options={settype_options}
                     errors={errors}
+                    index={index}
                   />
                 </div>
 

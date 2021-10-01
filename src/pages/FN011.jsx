@@ -55,7 +55,7 @@ const FN011 = (props) => {
   });
 
   const onSubmit = (data) => {
-    actions.updateAction(data);
+    actions.updateAction({ fn011: data });
     // add the extent of the selected lake to the state so we can use it
     // to validate coordinates of each space.
     const extent = lakes.filter((x) => x.value === data.lake)[0].extent;
@@ -64,6 +64,9 @@ const FN011 = (props) => {
     keys.forEach((key, i) => (bbox[key] = extent[i]));
 
     actions.updateAction({ bbox });
+
+    console.log(data);
+    console.log(state);
 
     props.history.push("./fn022");
   };

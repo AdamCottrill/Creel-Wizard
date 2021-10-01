@@ -5,7 +5,11 @@ export const prepDate = (val) => {
     val.setHours(0, 0, 0, 0);
     return val.toISOString().split("T")[0];
   } else {
-    return val.split("T")[0];
+    if (typeof val === "undefined") {
+      return val;
+    } else {
+      return val.split("T")[0];
+    }
   }
 };
 
