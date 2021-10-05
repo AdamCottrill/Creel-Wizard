@@ -64,10 +64,6 @@ const FN011 = (props) => {
     keys.forEach((key, i) => (bbox[key] = extent[i]));
 
     actions.updateAction({ bbox });
-
-    console.log(data);
-    console.log(state);
-
     props.history.push("./fn022");
   };
 

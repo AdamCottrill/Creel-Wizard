@@ -11,6 +11,14 @@ const LAKE_PREFIX_MAP = {
   SC: ["LEA", "LEM"],
 };
 
+const minDate = new Date("1950-01-01");
+const today = new Date();
+const maxDate = new Date(
+  today.getFullYear() + 1,
+  today.getMonth(),
+  today.getDate()
+);
+
 const FN011schema = yup.object().shape({
   prj_cd: yup
     .string()
@@ -37,6 +45,14 @@ const FN011schema = yup.object().shape({
     .transform((curr, orig) => (orig === "" ? null : curr))
     .required("Start date is required")
     .nullable()
+    .min(
+      minDate,
+      `All new projects must start after ${minDate.toLocaleDateString()}`
+    )
+    .max(
+      maxDate,
+      `All new projects must start before ${maxDate.toLocaleDateString()}`
+    )
     .test(
       "Start date is consistent with project code",
       "Start date is not consistent with year in project code.",
@@ -60,6 +76,11 @@ const FN011schema = yup.object().shape({
     .required("End date is required")
     .nullable()
     .min(yup.ref("prj_date0"), "Project end date can't be before start date.")
+
+    .max(
+      maxDate,
+      `All new projects must end before ${maxDate.toLocaleDateString()}`
+    )
     .test(
       "End date is consistent with project code",
       "End date is not consistent with year in project code.",

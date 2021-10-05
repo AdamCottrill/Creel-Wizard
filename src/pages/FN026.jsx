@@ -19,8 +19,8 @@ const FN026 = (props) => {
     {
       space: "00",
       space_des: "Project Study Area",
-      ddlat: "",
-      ddlon: "",
+      dd_lat: "",
+      dd_lon: "",
     },
   ];
 
@@ -173,7 +173,7 @@ const FN026 = (props) => {
 
           <ButtonBar
             append_values={defaultValues[0]}
-            button_label="Add a Space"
+            button_label="Add Another Space"
             back_link="/fn022"
             append={append}
           />

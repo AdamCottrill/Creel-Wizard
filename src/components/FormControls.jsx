@@ -10,7 +10,7 @@ export const Input = ({ name, label, type, register, errors, ...rest }) => {
     error = errors?.[name];
   } else {
     const [table, idx, field] = name.split(".");
-    error = errors[table]?.[index]?.[field];
+    error = errors[table]?.[idx]?.[field];
   }
 
   return (
@@ -101,7 +101,7 @@ export const ControlledSelect = ({
     error = errors?.[name];
   } else {
     const [table, idx, field] = name.split(".");
-    error = errors[table]?.[index]?.[field];
+    error = errors[table]?.[idx]?.[field];
   }
 
   return (
@@ -112,7 +112,7 @@ export const ControlledSelect = ({
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange, value, name, ref } }) => (
+        render={({ field: { onChange, value, name, ref, ...rest } }) => (
           <>
             <ReactSelect
               inputRef={ref}

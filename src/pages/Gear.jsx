@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+
+import ReactSelect from "react-select";
 
 import { useQuery } from "react-query";
 import { withRouter } from "react-router-dom";
@@ -28,16 +30,16 @@ const Gear = (props) => {
   const defaultValues = [
     {
       gear: "",
-      //process_types: []
+      process_types: [],
     },
   ];
 
   const initialValues = state.gear_array || defaultValues;
 
   const {
-    //    register,
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: { gear_array: initialValues },
@@ -50,6 +52,8 @@ const Gear = (props) => {
     name: "gear_array",
   });
 
+  const gear_array = watch("gear_array");
+
   if (gears_loading) return "Loading...";
 
   if (gears_error) return "An error has occurred: " + gears_error.message;
@@ -57,6 +61,20 @@ const Gear = (props) => {
   const onSubmit = (data) => {
     actions.updateAction(data);
     props.history.push("./fn028");
+  };
+
+  if (gear_options) {
+    console.log("gear_options = ", gear_options);
+  }
+
+  const getProcessTypes = (field) => {
+    const ptypes = gear_options.filter((x) => x.value === field)[0];
+
+    if (typeof ptypes !== "undefined") {
+      return ptypes.process_types;
+    } else {
+      return [];
+    }
   };
 
   return (
@@ -103,65 +121,57 @@ const Gear = (props) => {
               <div className="card mb-2" key={field.id}>
                 <div className="card-body">
                   <div className="row">
-                    <div className="col-3 mb-3">
+                    <div className="col-4 mb-3">
                       <ControlledSelect
                         name={`gear_array.${index}.gear`}
                         label="Gear"
+                        defaultValue=""
                         options={gear_options}
                         control={control}
                         errors={errors}
                         placeholder="Select gear..."
                         index={index}
                       />
-                      {/*   <Controller */}
-                      {/*     key={field.id} */}
-                      {/*     name={`gear_array.${index}.gear_code`} */}
-                      {/*     control={control} */}
-                      {/*     render={({ field }) => ( */}
-                      {/*       <Select {...field} options={gears} /> */}
-                      {/*     )} */}
-                      {/*   /> */}
-                      {/*   {errors.gear && ( */}
-                      {/*     <div className="invalid-feedback"> */}
-                      {/*       Please select a gear. */}
-                      {/*     </div> */}
-                      {/*   )} */}
                     </div>
 
-                    {/* <div className="col-7 mb-3"> */}
-                    {/*   <div className="row"> */}
-                    {/*     <p>Process Type:</p> */}
-                    {/*   </div> */}
-                    {/*   <div className="row"> */}
-                    {/*     <div className="col-12"> */}
-                    {/*       {(field.process_types || []).map((ptype) => { */}
-                    {/*         return ( */}
-                    {/*           <div */}
-                    {/*             className="form-check form-check-inline" */}
-                    {/*             key={`process-type-${index}-${ptype.id}`} */}
-                    {/*           > */}
-                    {/*             <input */}
-                    {/*               className="form-check-input" */}
-                    {/*               type="checkbox" */}
-                    {/*               name={`process-type-${index}`} */}
-                    {/*               id={`process-type-${index}-${ptype.id}`} */}
-                    {/*               value={`process-type-${ptype.selected}`} */}
-                    {/*               {...register( */}
-                    {/*                 `gear_array.process_types.${index}.${ptype.id}` */}
-                    {/*               )} */}
-                    {/*             /> */}
-                    {/*             <label */}
-                    {/*               className="form-check-label" */}
-                    {/*               htmlFor={`process-type-${index}-${ptype.id}`} */}
-                    {/*             > */}
-                    {/*               {ptype.name} */}
-                    {/*             </label> */}
-                    {/*           </div> */}
-                    {/*         ); */}
-                    {/*       })} */}
-                    {/*     </div> */}
-                    {/*   </div> */}
-                    {/* </div> */}
+                    <div className="col-6 mb-3">
+                      <div className="row">
+                        <div className="col-12">
+                          <label
+                            htmlFor={`process-types.${index}`}
+                            className="form-label"
+                          >
+                            Process Types:
+                          </label>
+                          <Controller
+                            name={`gear_array.${index}.process_types`}
+                            control={control}
+                            defaultValue={[]}
+                            render={({
+                              field: { onChange, value, name, ref },
+                            }) => (
+                              <ReactSelect
+                                //isDisabled={gear_array[index].gear === ""}
+                                inputRef={ref}
+                                onChange={onChange}
+                                value={[...value]}
+                                name={name}
+                                options={getProcessTypes(
+                                  gear_array[index].gear
+                                )}
+                                getOptionValue={(option) => option.process_type}
+                                isMulti
+                              />
+                            )}
+                          />
+                          {errors?.gear_array?.[index]?.process_types && (
+                            <div className="invalid-feedback">
+                              {errors.gear_array[index].process_types.message}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
 
                     <FieldArrayButtons
                       index={index}
