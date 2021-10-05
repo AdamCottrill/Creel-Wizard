@@ -1,3 +1,5 @@
+
+
 {
   "name": "project_wizard",
   "version": "0.1.0",
@@ -26,11 +28,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+      "build": "react-scripts build --environment NODE_ENV:production",
+      "deploy": "yarn run build && robocopy  build/ ../../python/djcode/apps/fn_portal/fn_portal/static/fn_portal/project_wizard /E /PURGE /IS /IT",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "yarn run build",
-    "deploy": "yarn gh-pages -d build -r git@github.com:AdamCottrill/Fishnet-Project-Wizard.git"
+    "deploy-gh": "yarn gh-pages -d build -r git@github.com:AdamCottrill/Fishnet-Project-Wizard.git"
   },
   "eslintConfig": {
     "extends": [

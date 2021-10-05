@@ -32,7 +32,13 @@ function App() {
     <StateMachineProvider>
       <QueryClientProvider client={queryClient}>
         <div className="container">
-          <Router basename={process.env.PUBLIC_URL}>
+          <Router
+            basename={
+              process.env.NODE_ENV === "development"
+                ? "/"
+                : process.env.PUBLIC_URL
+            }
+          >
             <div className="row justify-content-between my-3">
               <div className="col-6">
                 <h1>FN Project Setup Wizard</h1>
