@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { withRouter } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useStateMachine } from "little-state-machine";
 
 import { getGears } from "../services/api";
 
+import schema from "../schemas/FN028";
 import { updateAction } from "../actions";
 import { ButtonBar } from "../components/ButtonBar";
 import { FieldArrayButtons } from "../components/FieldArrayButtons";
@@ -17,7 +19,6 @@ const FN028 = (props) => {
   const [showRules, setShowRules] = useState(false);
 
   const orient_options = [
-    //{ value: "", label: "Select orient..." },
     { value: "1", label: "Across Contours (1)" },
     { value: "2", label: "With Contours (2)" },
     { value: "9", label: "No Reported (9)" },
@@ -26,7 +27,6 @@ const FN028 = (props) => {
   ];
 
   const settype_options = [
-    { value: "", label: "Select set type..." },
     { value: "b", label: "On Bottom (B)" },
     { value: "c", label: "Canned (C)" },
     { value: "k", label: "Kited (K)" },
@@ -69,6 +69,8 @@ const FN028 = (props) => {
     formState: { errors },
   } = useForm({
     defaultValues: { fn028: initialValues },
+    resolver: yupResolver(schema),
+    mode: "onChange",
   });
 
   const { fields, append, remove, move } = useFieldArray({
@@ -81,8 +83,6 @@ const FN028 = (props) => {
   if (gears_error) return "An error has occurred: " + gears_error.message;
 
   const onSubmit = (data) => {
-    console.log("data = ", data);
-    console.log("errors = ", errors);
     actions.updateAction(data);
     props.history.push("./result");
   };
@@ -148,7 +148,7 @@ const FN028 = (props) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           {fields.map((item, index) => {
             return (
-              <div className="row" key={item.is}>
+              <div className="row" key={item.id}>
                 <div className="col-1 mb-3">
                   <Input
                     name={`fn028.${index}.mode`}
