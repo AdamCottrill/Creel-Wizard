@@ -11,7 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { getProjectLeads, getProtocols, getLakes } from "../services/api";
 
 import schema from "../schemas/FN011";
-import { Input, Select, ControlledSelect } from "../components/FormControls";
+import { Input, ControlledSelect } from "../components/FormControls";
 import { updateAction } from "../actions";
 import { prepDate } from "../utils";
 
@@ -181,11 +181,11 @@ const FN011 = (props) => {
               </div>
 
               <div className="col-3 mb-3">
-                <Select
+                <ControlledSelect
                   name="lake"
                   label="Lake"
-                  register={register}
                   options={lakes}
+                  control={control}
                   errors={errors}
                 />
               </div>
