@@ -7,6 +7,6 @@ export function updateAction(state, payload) {
 
 //const initialState = {};
 
-export function resetState(state, payload) {
+export function resetState() {
   return {};
 }

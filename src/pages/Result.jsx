@@ -2,12 +2,12 @@ import React from "react";
 import { useStateMachine } from "little-state-machine";
 import { updateAction } from "../actions";
 
-const Result = (props) => {
+const Result = () => {
   const { state } = useStateMachine(updateAction);
 
   return (
     <>
-      <h2>That's it.</h2>
+      <h2>That&lsquo;s it.</h2>
 
       <p>
         Your project has been created with the following information. You can

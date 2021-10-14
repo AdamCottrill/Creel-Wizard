@@ -27,7 +27,7 @@ const FN011schema = yup.object().shape({
     .test(
       "prj_cd-exists",
       "That project code already exists.",
-      async (value, context) => {
+      async (value) => {
         try {
           const response = await api
             .get(`/fn011/${value.toLowerCase()}/`)

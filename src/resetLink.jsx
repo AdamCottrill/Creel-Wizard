@@ -4,7 +4,7 @@ import { useStateMachine } from "little-state-machine";
 import { resetState } from "./actions";
 import { useHistory } from "react-router-dom";
 
-const ResetLink = (props) => {
+const ResetLink = () => {
   const history = useHistory();
   const { actions } = useStateMachine({ resetState });
 
