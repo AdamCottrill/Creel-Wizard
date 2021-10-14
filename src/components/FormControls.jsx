@@ -7,9 +7,11 @@ export const Input = ({ name, label, type, register, error, ...rest }) => {
 
   return (
     <>
-      <label htmlFor="{name}" className="form-label">
-        {label}
-      </label>
+      {label && (
+        <label htmlFor="{name}" className="form-label">
+          {label}
+        </label>
+      )}
       <input
         type={type}
         className={error ? "form-control is-invalid" : "form-control"}
@@ -35,9 +37,11 @@ export const Select = ({ name, label, options, register, error, ...rest }) => {
 
   return (
     <>
-      <label htmlFor="{id}" className="form-label">
-        {label}
-      </label>
+      {label && (
+        <label htmlFor="{id}" className="form-label">
+          {label}
+        </label>
+      )}
       <select
         id={id}
         {...register(name)}
@@ -71,9 +75,11 @@ export const ControlledSelect = ({
 
   return (
     <>
-      <label htmlFor={htmlFor} className="form-label">
-        {label}
-      </label>
+      {label && (
+        <label htmlFor={htmlFor} className="form-label">
+          {label}
+        </label>
+      )}
       <Controller
         name={name}
         control={control}

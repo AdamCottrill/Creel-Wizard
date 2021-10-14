@@ -156,7 +156,6 @@ const FN028 = (props) => {
                     type="text"
                     register={register}
                     error={errors?.fn028?.[index]?.mode}
-                    index={index}
                   />
                 </div>
 
@@ -167,7 +166,6 @@ const FN028 = (props) => {
                     type="text"
                     register={register}
                     error={errors?.fn028?.[index]?.mode_des}
-                    index={index}
                   />
                 </div>
 
@@ -181,7 +179,6 @@ const FN028 = (props) => {
                       gears_in_state.includes(x.value)
                     )}
                     errors={errors}
-                    index={index}
                   />
                 </div>
 
@@ -194,7 +191,6 @@ const FN028 = (props) => {
                     register={register}
                     options={orient_options}
                     error={errors?.fn028?.[index]?.orient}
-                    index={index}
                   />
                 </div>
 
@@ -208,7 +204,6 @@ const FN028 = (props) => {
                     options={settype_options}
                     error={errors?.fn028?.[index]?.set_type}
                     errors={errors}
-                    index={index}
                   />
                 </div>
 

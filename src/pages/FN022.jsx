@@ -118,7 +118,6 @@ const FN022 = (props) => {
                     type="text"
                     register={register}
                     error={errors?.fn022?.[index]?.ssn}
-                    index={index}
                   />
                 </div>
 
@@ -129,7 +128,6 @@ const FN022 = (props) => {
                     type="text"
                     register={register}
                     error={errors?.fn022?.[index]?.ssn_des}
-                    index={index}
                   />
                 </div>
 
@@ -145,7 +143,6 @@ const FN022 = (props) => {
                         `fn022.${index}.ssn_date0` || defaultValues[0].ssn_date0
                       ]
                     }
-                    index={index}
                   />
                 </div>
 
@@ -159,7 +156,6 @@ const FN022 = (props) => {
                     defaultValue={
                       `fn022.${index}.ssn_date1` || defaultValues[0].ssn_date1
                     }
-                    index={index}
                   />
                 </div>
 

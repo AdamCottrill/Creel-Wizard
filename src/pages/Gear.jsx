@@ -135,7 +135,6 @@ const Gear = (props) => {
                         control={control}
                         error={errors?.gear_array?.[index]?.gear}
                         placeholder="Select gear..."
-                        index={index}
                       />
                     </div>
 

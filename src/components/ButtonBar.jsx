@@ -10,7 +10,7 @@ export const ButtonBar = ({
 }) => {
   return (
     <div className="row justify-content-between">
-      <div className="col-2">
+      <div className="col-3">
         <Link to={back_link}>
           <button type="button" className="btn btn-primary">
             <span className="px-1">
@@ -21,7 +21,7 @@ export const ButtonBar = ({
         </Link>
       </div>
 
-      <div className="col-2">
+      <div className="col-4">
         <button
           type="button"
           className="btn btn-secondary"
@@ -35,7 +35,7 @@ export const ButtonBar = ({
           {button_label}
         </button>
       </div>
-      <div className="col-2">
+      <div className="col-3">
         <button type="submit" className="btn btn-primary">
           Next
           <span className="ps-2">
