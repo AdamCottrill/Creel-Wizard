@@ -73,7 +73,7 @@ const FN011 = (props) => {
   if (prj_ldr_error || protocols_error || lakes_error) {
     return (
       <div>
-        "An error has occurred: "{prj_ldr_error && prj_ldr_error.message}
+        An error has occurred:{prj_ldr_error && prj_ldr_error.message}
         {protocols_error && protocols_error.message}
         {lakes_error && lakes_error.message}
       </div>
@@ -89,7 +89,9 @@ const FN011 = (props) => {
         pre-configured data entry template database will be provided for you to
         download and populate.
       </p>
-      <p>Let's get started with some basic information about the project.</p>
+      <p>
+        Let&lsquo;s get started with some basic information about the project.
+      </p>
       <div className="card">
         <div className="card-header">
           <div className="d-flex justify-content-between">
@@ -112,7 +114,8 @@ const FN011 = (props) => {
                   <li>project code must be consistent with lake and dates</li>
                   <li>
                     project code must be valid project code - should we limit
-                    project types here to 'IA' and 'IS' projects?
+                    project types here to &lsquo;IA&lsquo; and &lsquo;IS&lsquo;
+                    projects?
                   </li>
                   <li>
                     project end must occur on or after project start in the same
@@ -134,7 +137,7 @@ const FN011 = (props) => {
                   type="text"
                   label="Project Code"
                   register={register}
-                  errors={errors}
+                  error={errors.prj_cd}
                 />
               </div>
               <div className="col-4 mb-3">
@@ -143,7 +146,7 @@ const FN011 = (props) => {
                   label="Project Name"
                   type="text"
                   register={register}
-                  errors={errors}
+                  error={errors.prj_nm}
                 />
               </div>
 
@@ -153,7 +156,7 @@ const FN011 = (props) => {
                   label="Project Lead"
                   options={project_leads}
                   control={control}
-                  errors={errors}
+                  error={errors.prj_ldr}
                   placeholder="Select project lead..."
                 />
               </div>
@@ -166,7 +169,7 @@ const FN011 = (props) => {
                   label="Start Date"
                   type="date"
                   register={register}
-                  errors={errors}
+                  error={errors.prj_date0}
                 />
               </div>
 
@@ -176,7 +179,7 @@ const FN011 = (props) => {
                   label="End Date"
                   type="date"
                   register={register}
-                  errors={errors}
+                  error={errors.prj_date1}
                 />
               </div>
 
@@ -186,7 +189,7 @@ const FN011 = (props) => {
                   label="Lake"
                   options={lakes}
                   control={control}
-                  errors={errors}
+                  error={errors.lake}
                 />
               </div>
 
@@ -196,7 +199,7 @@ const FN011 = (props) => {
                   label="Protocol"
                   options={protocols}
                   control={control}
-                  errors={errors}
+                  error={errors.protocol}
                   placeholder="Select protocol..."
                 />
               </div>
@@ -233,6 +236,7 @@ const FN011 = (props) => {
                 type="file"
                 id="field-protocol"
                 accept=".doc,.docx,.pdf"
+                disabled={true}
               />
               <div id="field-protocol-help" className="form-text">
                 Protocol will be uploaded to Project Tracker

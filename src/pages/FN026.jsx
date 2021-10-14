@@ -122,7 +122,7 @@ const FN026 = (props) => {
                   label="Space"
                   type="text"
                   register={register}
-                  errors={errors}
+                  error={errors?.fn026?.[index]?.space}
                   index={index}
                 />
               </div>
@@ -133,7 +133,7 @@ const FN026 = (props) => {
                   label="Space Description"
                   type="text"
                   register={register}
-                  errors={errors}
+                  error={errors?.fn026?.[index]?.space_des}
                   index={index}
                 />
               </div>
@@ -144,7 +144,7 @@ const FN026 = (props) => {
                   label="Latitude"
                   type="text"
                   register={register}
-                  errors={errors}
+                  error={errors?.fn026?.[index]?.dd_lon}
                   index={index}
                 />
               </div>
@@ -155,7 +155,7 @@ const FN026 = (props) => {
                   label="Longitude"
                   type="text"
                   register={register}
-                  errors={errors}
+                  error={errors?.fn026?.[index]?.dd_lon}
                   index={index}
                 />
               </div>

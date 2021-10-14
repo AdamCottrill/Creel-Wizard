@@ -155,7 +155,7 @@ const FN028 = (props) => {
                     label="Mode"
                     type="text"
                     register={register}
-                    errors={errors}
+                    error={errors?.fn028?.[index]?.mode}
                     index={index}
                   />
                 </div>
@@ -166,7 +166,7 @@ const FN028 = (props) => {
                     label="Mode Description"
                     type="text"
                     register={register}
-                    errors={errors}
+                    error={errors?.fn028?.[index]?.mode_des}
                     index={index}
                   />
                 </div>
@@ -176,6 +176,7 @@ const FN028 = (props) => {
                     name={`fn028.${index}.gear`}
                     label="Gear"
                     register={register}
+                    placeHolder="Select gear..."
                     options={gear_options.filter((x) =>
                       gears_in_state.includes(x.value)
                     )}
@@ -189,10 +190,10 @@ const FN028 = (props) => {
                     name={`fn028.${index}.orient`}
                     label="Orient"
                     defaultValue=""
-                    placeholder="Select orient..."
+                    placeHolder="Select orient..."
                     register={register}
                     options={orient_options}
-                    errors={errors}
+                    error={errors?.fn028?.[index]?.orient}
                     index={index}
                   />
                 </div>
@@ -202,9 +203,10 @@ const FN028 = (props) => {
                     name={`fn028.${index}.set_type`}
                     label="Set Type"
                     defaultValue=""
-                    placeholder="Select Set Type..."
+                    placeHolder="Select Set Type..."
                     register={register}
                     options={settype_options}
+                    error={errors?.fn028?.[index]?.set_type}
                     errors={errors}
                     index={index}
                   />

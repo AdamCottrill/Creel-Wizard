@@ -77,6 +77,8 @@ const Gear = (props) => {
     }
   };
 
+  console.log("errors = ", errors);
+
   return (
     <div className="card">
       <div className="card-header">
@@ -107,7 +109,10 @@ const Gear = (props) => {
               <h5 className="card-title">Validation Rules</h5>
               <ul>
                 <li>at least one gear and one process type is required.</li>
-                <li>gears must be unique ('GL50' can't be selected twice)</li>
+                <li>
+                  gears must be unique (&lsquo;GL50&lsquo; can&lsquo;t be
+                  selected twice)
+                </li>
               </ul>
             </div>
           </div>
@@ -128,7 +133,7 @@ const Gear = (props) => {
                         defaultValue=""
                         options={gear_options}
                         control={control}
-                        errors={errors}
+                        error={errors?.gear_array?.[index]?.gear}
                         placeholder="Select gear..."
                         index={index}
                       />
@@ -147,6 +152,11 @@ const Gear = (props) => {
                             name={`gear_array.${index}.process_types`}
                             control={control}
                             defaultValue={[]}
+                            className={
+                              errors?.gear_array?.[index]?.process_types
+                                ? "form-control is-invalid"
+                                : "form-control"
+                            }
                             render={({
                               field: { onChange, value, name, ref },
                             }) => (
@@ -161,6 +171,11 @@ const Gear = (props) => {
                                 )}
                                 getOptionValue={(option) => option.process_type}
                                 isMulti
+                                className={
+                                  errors?.gear_array?.[index]?.process_types
+                                    ? "form-control is-invalid"
+                                    : null
+                                }
                               />
                             )}
                           />

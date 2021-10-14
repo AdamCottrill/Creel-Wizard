@@ -117,7 +117,7 @@ const FN022 = (props) => {
                     label="Season"
                     type="text"
                     register={register}
-                    errors={errors}
+                    error={errors?.fn022?.[index]?.ssn}
                     index={index}
                   />
                 </div>
@@ -128,7 +128,7 @@ const FN022 = (props) => {
                     label="Season Description"
                     type="text"
                     register={register}
-                    errors={errors}
+                    error={errors?.fn022?.[index]?.ssn_des}
                     index={index}
                   />
                 </div>
@@ -139,7 +139,7 @@ const FN022 = (props) => {
                     label="Start Date"
                     type="date"
                     register={register}
-                    errors={errors}
+                    error={errors?.fn022?.[index]?.ssn_date0}
                     defaultValue={
                       initialValues[
                         `fn022.${index}.ssn_date0` || defaultValues[0].ssn_date0
@@ -155,7 +155,7 @@ const FN022 = (props) => {
                     label="End Date"
                     type="date"
                     register={register}
-                    errors={errors}
+                    error={errors?.fn022?.[index]?.ssn_date1}
                     defaultValue={
                       `fn022.${index}.ssn_date1` || defaultValues[0].ssn_date1
                     }

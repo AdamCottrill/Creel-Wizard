@@ -2,16 +2,8 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import ReactSelect from "react-select";
 
-export const Input = ({ name, label, type, register, errors, ...rest }) => {
-  let error;
-  const { index, helpText } = { ...rest };
-
-  if (typeof index === "undefined") {
-    error = errors?.[name];
-  } else {
-    const [table, idx, field] = name.split(".");
-    error = errors[table]?.[idx]?.[field];
-  }
+export const Input = ({ name, label, type, register, error, ...rest }) => {
+  const { helpText } = { ...rest };
 
   return (
     <>
@@ -35,41 +27,25 @@ export const Input = ({ name, label, type, register, errors, ...rest }) => {
   );
 };
 
-export const Select = ({
-  name,
-  label,
-  options,
-  register,
-  errors,
-  placeholder,
-  ...rest
-}) => {
+export const Select = ({ name, label, options, register, error, ...rest }) => {
   const id = `select-${name}`;
-  const _placeholder = placeholder ? placeholder : `Select ${name} ...`;
 
-  let error;
-  const { index } = { ...rest };
-
-  if (typeof index === "undefined") {
-    error = errors?.[name];
-  } else {
-    const [table, idx, field] = name.split(".");
-    error = errors[table]?.[idx]?.[field];
-  }
+  const { placeHolder } = rest;
+  let _placeHolder = placeHolder ? placeHolder : "Select ....";
 
   return (
     <>
       <label htmlFor="{id}" className="form-label">
         {label}
       </label>
-
       <select
         id={id}
         {...register(name)}
         defaultValue=""
         className={error ? "form-control is-invalid" : "form-control"}
+        {...rest}
       >
-        <option value=""> {_placeholder} </option>
+        <option value=""> {_placeHolder} </option>
         {options.map((item) => {
           return (
             <option key={item.value} value={item.value}>
@@ -86,23 +62,12 @@ export const Select = ({
 export const ControlledSelect = ({
   name,
   label,
-  placeholder,
   control,
   options,
-  errors,
+  error,
   ...rest
 }) => {
   const htmlFor = `select-${name}`;
-
-  let error;
-  const { index } = { ...rest };
-
-  if (typeof index === "undefined") {
-    error = errors?.[name];
-  } else {
-    const [table, idx, field] = name.split(".");
-    error = errors[table]?.[idx]?.[field];
-  }
 
   return (
     <>
@@ -112,15 +77,15 @@ export const ControlledSelect = ({
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange, value, name, ref, ...rest } }) => (
+        render={({ field: { onChange, value, ref } }) => (
           <>
             <ReactSelect
               inputRef={ref}
               options={options}
               className={error ? "form-control is-invalid" : null}
-              placeholder={placeholder}
               value={options.find((c) => c.value === value)}
               onChange={(val) => onChange(val.value)}
+              {...rest}
             />
 
             {error && <div className="invalid-feedback">{error.message}</div>}
