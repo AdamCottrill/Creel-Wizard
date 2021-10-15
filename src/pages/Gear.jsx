@@ -63,10 +63,6 @@ const Gear = (props) => {
     props.history.push("./fn028");
   };
 
-  if (gear_options) {
-    console.log("gear_options = ", gear_options);
-  }
-
   const getProcessTypes = (field) => {
     const ptypes = gear_options.filter((x) => x.value === field)[0];
 
@@ -76,8 +72,6 @@ const Gear = (props) => {
       return [];
     }
   };
-
-  console.log("errors = ", errors);
 
   return (
     <div className="card">

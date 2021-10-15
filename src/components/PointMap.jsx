@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-import ReactMapGL, { WebMercatorViewport, Popup } from "react-map-gl";
+import ReactMapGL, {
+  WebMercatorViewport,
+  Popup,
+  NavigationControl,
+} from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -12,6 +16,13 @@ export const PointMap = ({
   setPopupInfo,
   bbox,
 }) => {
+  const navStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    padding: "10px",
+  };
+
   const wmViewport = new WebMercatorViewport({
     width: width,
     height: height,
@@ -21,7 +32,7 @@ export const PointMap = ({
       [bbox.maxLon, bbox.maxLat],
     ],
     {
-      padding: 40,
+      padding: 30,
     }
   );
 
@@ -45,11 +56,15 @@ export const PointMap = ({
             closeOnClick={false}
             onClose={setPopupInfo}
           >
-            <div>
+            <div className="popup-marker-content">
               {popupInfo.space} - {popupInfo.space_des}
             </div>
           </Popup>
         )}
+
+        <div className="nav" style={navStyle}>
+          <NavigationControl />
+        </div>
       </ReactMapGL>
     </>
   );

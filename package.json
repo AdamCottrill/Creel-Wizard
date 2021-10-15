@@ -20,12 +20,13 @@
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.15.2",
     "react-icons": "^4.2.0",
-    "react-map-gl": "^6.1.17",
+    "react-map-gl": "5.2.11",
     "react-query": "^3.24.4",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "react-select": "^4.3.1",
     "web-vitals": "^1.0.1",
+    "worker-loader": "^3.0.8",
     "yup": "^0.32.9"
   },
   "scripts": {
@@ -45,9 +46,8 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "defaults",
+      "not ie 11"
     ],
     "development": [
       "last 1 chrome version",

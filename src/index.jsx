@@ -15,6 +15,8 @@ import Result from "./pages/Result";
 
 import ResetLink from "./resetLink";
 
+import "./styles.css";
+
 createStore({});
 
 const queryClient = new QueryClient({

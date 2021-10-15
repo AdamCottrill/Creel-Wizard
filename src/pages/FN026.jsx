@@ -92,7 +92,6 @@ const FN026 = (props) => {
   const ShowMap = (index) => {
     // set the current point if it exists:
     setCurrentIndex(index);
-    //console.log("getValues() = ", getValues("fn026"));
     const dd_lon = getValues(`fn026.${index}.dd_lon`);
     const dd_lat = getValues(`fn026.${index}.dd_lat`);
     if (dd_lon && dd_lat) {
@@ -103,7 +102,6 @@ const FN026 = (props) => {
 
   const handleHide = () => {
     if (point.length) {
-      console.log("point = ", point);
       setValue(`fn026.${currentIndex}.dd_lon`, point[0].toPrecision(7));
       setValue(`fn026.${currentIndex}.dd_lat`, point[1].toPrecision(7));
       //addPoint(point);
