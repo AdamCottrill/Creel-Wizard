@@ -19,12 +19,13 @@ const FN011 = (props) => {
   const { actions, state } = useStateMachine({ updateAction });
 
   const [showRules, setShowRules] = useState(false);
+  const [allStaff, setAllStaff] = useState(false);
 
   const {
     data: project_leads,
     error: prj_ldr_error,
     isLoading: prj_ldr_loading,
-  } = useQuery("project_leads", getProjectLeads);
+  } = useQuery(["project_leads", allStaff], () => getProjectLeads(allStaff));
 
   const {
     data: protocols,
@@ -80,6 +81,8 @@ const FN011 = (props) => {
     );
   }
 
+  console.log("allStaff = ", allStaff);
+
   return (
     <>
       <p>
@@ -131,7 +134,7 @@ const FN011 = (props) => {
           )}
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="row">
-              <div className="col-4 mb-3">
+              <div className="col-2 mb-3">
                 <Input
                   name="prj_cd"
                   type="text"
@@ -140,7 +143,7 @@ const FN011 = (props) => {
                   error={errors.prj_cd}
                 />
               </div>
-              <div className="col-4 mb-3">
+              <div className="col-5 mb-3">
                 <Input
                   name="prj_nm"
                   label="Project Name"
@@ -150,7 +153,7 @@ const FN011 = (props) => {
                 />
               </div>
 
-              <div className="col-4 mb-3">
+              <div className="col-3 mb-3">
                 <ControlledSelect
                   name="prj_ldr"
                   label="Project Lead"
@@ -159,6 +162,35 @@ const FN011 = (props) => {
                   error={errors.prj_ldr}
                   placeholder="Select project lead..."
                 />
+              </div>
+
+              <div className="col mb-3 align-self-end">
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="staffRadio"
+                    id="active-staff"
+                    onChange={() => setAllStaff(false)}
+                    checked={!allStaff}
+                  />
+                  <label className="form-check-label" htmlFor="active-staff">
+                    Active Staff
+                  </label>
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="staffRadio"
+                    id="all-staff"
+                    onChange={() => setAllStaff(true)}
+                    checked={allStaff}
+                  />
+                  <label className="form-check-label" htmlFor="all-staff">
+                    All Staff
+                  </label>
+                </div>
               </div>
             </div>
 

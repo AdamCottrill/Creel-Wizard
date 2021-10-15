@@ -12,12 +12,27 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
   });
 }
 
-export const getProjectLeads = async () => {
-  const response = await api.get("/prj_ldr");
+export const getProjectLeads = async (allStaff) => {
+  let filters;
+
+  if (allStaff) {
+    filters = { all: true };
+  } else {
+    filters = {};
+  }
+
+  const response = await api.get("/prj_ldr", { params: filters });
   const data = response.data;
-  return data.map((x) => {
-    return { value: x.username, label: `${x.first_name} ${x.last_name}` };
-  });
+  return data
+    .map((x) => {
+      const label = `${x.first_name} ${x.last_name}`.trim();
+
+      return {
+        value: x.username,
+        label: label == "" ? x.username : label,
+      };
+    })
+    .filter((x) => x.username !== "un");
 };
 
 export const getProtocols = async () => {
