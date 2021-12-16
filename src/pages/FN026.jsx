@@ -79,7 +79,8 @@ const FN026 = (props) => {
                 lat={lat}
                 lon={lon}
                 onClick={() => {
-                  setPopupInfo(values[i]);
+                  const tmp = { ...values[i], dd_lat: lat, dd_lon: lon };
+                  setPopupInfo(tmp);
                 }}
               />
             );

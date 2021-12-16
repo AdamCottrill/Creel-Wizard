@@ -68,8 +68,7 @@ const FN011 = (props) => {
     props.history.push("./fn022");
   };
 
-  if (prj_ldr_loading || protocols_loading || lakes_loading)
-    return "Loading...";
+  if (protocols_loading || lakes_loading) return "Loading...";
 
   if (prj_ldr_error || protocols_error || lakes_error) {
     return (
@@ -80,8 +79,6 @@ const FN011 = (props) => {
       </div>
     );
   }
-
-  console.log("allStaff = ", allStaff);
 
   return (
     <>
@@ -157,7 +154,7 @@ const FN011 = (props) => {
                 <ControlledSelect
                   name="prj_ldr"
                   label="Project Lead"
-                  options={project_leads}
+                  options={project_leads ? project_leads : []}
                   control={control}
                   error={errors.prj_ldr}
                   placeholder="Select project lead..."

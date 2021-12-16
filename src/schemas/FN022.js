@@ -35,6 +35,41 @@ yup.addMethod(yup.array, "uniqueSsnDes", function (message) {
   });
 });
 
+yup.addMethod(yup.array, "uniqueSsnDate0", function (message) {
+  return this.test("uniqueSsn", message, function (list) {
+    const mapper = (x) => x.ssn_date0.setHours(0, 0, 0, 0);
+    const set = [...new Set(list.map(mapper))];
+    const isUnique = list.length === set.length;
+    if (isUnique) {
+      return true;
+    }
+
+    const idx = list.findIndex((l, i) => mapper(l) !== set[i]);
+    return this.createError({
+      path: `fn022.[${idx}].ssn_date0`,
+      message: message,
+    });
+  });
+});
+
+yup.addMethod(yup.array, "uniqueSsnDate1", function (message) {
+  return this.test("uniqueSsn", message, function (list) {
+    const mapper = (x) => x.ssn_date1.setHours(0, 0, 0, 0);
+    const set = [...new Set(list.map(mapper))];
+    const isUnique = list.length === set.length;
+
+    if (isUnique) {
+      return true;
+    }
+
+    const idx = list.findIndex((l, i) => mapper(l) !== set[i]);
+    return this.createError({
+      path: `fn022.[${idx}].ssn_date1`,
+      message: message,
+    });
+  });
+});
+
 const FN022schema = yup.object().shape({
   fn022: yup
     .array()
@@ -86,7 +121,9 @@ const FN022schema = yup.object().shape({
       })
     )
     .uniqueSsn("Season must be unique")
-    .uniqueSsnDes("Season Description must be unique"),
+    .uniqueSsnDes("Season Description must be unique")
+    .uniqueSsnDate0("Season start dates must be unique")
+    .uniqueSsnDate1("Season end dates must be unique"),
 });
 
 export default FN022schema;

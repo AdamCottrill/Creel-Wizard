@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { withRouter } from "react-router-dom";
-import { useQuery } from "react-query";
+import { withRouter, useHistory } from "react-router-dom";
+import { useQuery, useMutation } from "react-query";
 import { useStateMachine } from "little-state-machine";
 
-import { getGears } from "../services/api";
+import { getGears, createProject } from "../services/api";
+
+import CSRFToken from "../csrftoken";
 
 import schema from "../schemas/FN028";
 import { updateAction } from "../actions";
@@ -13,8 +15,28 @@ import { ButtonBar } from "../components/ButtonBar";
 import { FieldArrayButtons } from "../components/FieldArrayButtons";
 import { Input, Select } from "../components/FormControls";
 
-const FN028 = (props) => {
+const FN028 = () => {
+  const history = useHistory();
   const { state, actions } = useStateMachine({ updateAction });
+
+  const mutation = useMutation(createProject, {
+    onSuccess: ({ data }) => {
+      const { prj_cd } = data.fn011;
+      const url = `/fn_portal/project_detail/${prj_cd.toLowerCase()}/`;
+      //history.push(url);
+      window.location.pathname = url;
+    },
+
+    onError: (error) => {
+      const error_message = error.response.data[0];
+      const [page, message] = Object.entries(error_message)[0];
+      // consider putting message into or state
+      actions.updateAction({ form_errors: message });
+      const url = `/${page}/`;
+      console.log(message);
+      history.push(url);
+    },
+  });
 
   const [showRules, setShowRules] = useState(false);
 
@@ -82,9 +104,12 @@ const FN028 = (props) => {
 
   if (gears_error) return "An error has occurred: " + gears_error.message;
 
+  if (mutation.isLoading) return "Creating your project. One moment please.";
+
   const onSubmit = (data) => {
     actions.updateAction(data);
-    props.history.push("./result");
+    //
+    mutation.mutate(state);
   };
 
   return (
@@ -174,7 +199,7 @@ const FN028 = (props) => {
                     name={`fn028.${index}.gear`}
                     label="Gear"
                     register={register}
-                    placeHolder="Select gear..."
+                    placeholder="Select gear..."
                     options={gear_options.filter((x) =>
                       gears_in_state.includes(x.value)
                     )}
@@ -187,7 +212,7 @@ const FN028 = (props) => {
                     name={`fn028.${index}.orient`}
                     label="Orient"
                     defaultValue=""
-                    placeHolder="Select orient..."
+                    placeholder="Select orient..."
                     register={register}
                     options={orient_options}
                     error={errors?.fn028?.[index]?.orient}
@@ -199,7 +224,7 @@ const FN028 = (props) => {
                     name={`fn028.${index}.set_type`}
                     label="Set Type"
                     defaultValue=""
-                    placeHolder="Select Set Type..."
+                    placeholder="Select Set Type..."
                     register={register}
                     options={settype_options}
                     error={errors?.fn028?.[index]?.set_type}
@@ -225,6 +250,7 @@ const FN028 = (props) => {
             back_link="/gear"
             append={append}
           />
+          <CSRFToken />
         </form>
       </div>
     </div>

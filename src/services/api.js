@@ -1,6 +1,10 @@
 import axios from "axios";
 
+import Cookies from "js-cookie";
+
 export let api;
+
+const csrftoken = Cookies.get("csrftoken");
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
   api = axios.create({
@@ -9,6 +13,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
 } else {
   api = axios.create({
     baseURL: "/fn_portal/api/v1",
+    headers: { "X-CSRFToken": csrftoken },
   });
 }
 
@@ -79,4 +84,11 @@ export const getLakes = async () => {
 export const checkPrjCd = async (prj_cd) => {
   const response = await api.get(`/fn011/${prj_cd.toLowerCase()}/`);
   return response.status;
+};
+
+export const createProject = async (newProject) => {
+  const response = await api.post("/project_wizard/", newProject);
+  const data = response.data;
+  console.log(data);
+  return data;
 };

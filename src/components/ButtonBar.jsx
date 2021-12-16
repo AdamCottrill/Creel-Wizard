@@ -11,7 +11,7 @@ export const ButtonBar = ({
   return (
     <div className="row justify-content-between">
       <div className="col-3">
-        <Link to={back_link}>
+        <Link to={back_link} tabIndex="-1">
           <button type="button" className="btn btn-primary">
             <span className="px-1">
               <FaArrowLeft />

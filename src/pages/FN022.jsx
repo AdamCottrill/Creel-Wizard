@@ -107,6 +107,12 @@ const FN022 = (props) => {
 
         <hr />
 
+        {state?.form_errors && (
+          <div className="alert alert-danger" role="alert">
+            {state.form_errors}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           {fields.map((item, index) => {
             return (
